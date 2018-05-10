@@ -12,7 +12,7 @@
     "build": "npm run ionic:build",
     "ionic:serve": "ionic-app-scripts serve -b",
     "https": "node https",
-    "dev":"npm run ionic:serve",
+    "dev": "npm run ionic:serve",
     "start": "concurrently \"npm run ionic:serve\" \"node https\""
   },
   "dependencies": {

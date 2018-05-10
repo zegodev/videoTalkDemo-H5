@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      设置
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+
+    <ion-item>
+      <ion-label>用户ID</ion-label>
+      <ion-input type="text" [value]="idName" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>用户名</ion-label>
+      <ion-input type="text" [(ngModel)]="nickName"></ion-input>
+    </ion-item>
+
+    <!--<ion-item>-->
+      <!--<ion-label>应用Id</ion-label>-->
+      <!--<ion-input type="text" [value]="appId" readonly></ion-input>-->
+    <!--</ion-item>-->
+
+    <ion-item>
+      <ion-label>日志级别</ion-label>
+      <ion-select [(ngModel)]="logLevel" multiple="false" cancelText="取消" okText="确定">
+        <ion-option value="0">debug</ion-option>
+        <ion-option value="1" selected="true">info</ion-option>
+        <ion-option value="2">warn</ion-option>
+        <ion-option value="3">error</ion-option>
+        <ion-option value="98">report</ion-option>
+        <ion-option value="100">disable</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <!--<ion-item>-->
+      <!--<ion-label>日志服务器</ion-label>-->
+      <!--<ion-input type="text" [value]="logUrl"></ion-input>-->
+    <!--</ion-item>-->
+
+    <!--<ion-item>-->
+      <!--<ion-label>观众能否创建房间</ion-label>-->
+      <!--<ion-toggle [(ngModel)]="audienceCreateRoom"></ion-toggle>-->
+    <!--</ion-item>-->
+
+    <ion-item>
+      <ion-label>采集监听</ion-label>
+      <ion-toggle [(ngModel)]="muted"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>麦克风</ion-label>
+      <ion-toggle [(ngModel)]="audio"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>音频设备</ion-label>
+      <ion-select [(ngModel)]="audioInput" multiple="false" cancelText="取消" okText="确定">
+        <ion-option *ngFor="let item of audioInputList" [value]="item.deviceId">{{item.label}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>摄像头</ion-label>
+      <ion-toggle [(ngModel)]="video"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>视频设备</ion-label>
+      <ion-select [(ngModel)]="videoInput" multiple="false" cancelText="取消" okText="确定">
+        <ion-option *ngFor="let item of videoInputList" [value]="item.deviceId">{{item.label}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>视频质量</ion-label>
+      <ion-select [(ngModel)]="videoQuality" multiple="false" cancelText="取消" okText="确定">
+        <ion-option value="1">标清</ion-option>
+        <ion-option value="2">高清</ion-option>
+        <ion-option value="3">超清</ion-option>
+        <!--<ion-option value="4">自定义</ion-option>-->
+      </ion-select>
+    </ion-item>
+
+    <!--<ion-item>-->
+      <!--<ion-label>开启横屏</ion-label>-->
+      <!--<ion-toggle [(ngModel)]="horizontal"></ion-toggle>-->
+    <!--</ion-item>-->
+
+    <ion-item>
+      <button ion-button round full large (click)="showConfirm()">确定</button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

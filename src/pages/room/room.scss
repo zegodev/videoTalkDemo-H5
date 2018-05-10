@@ -1,0 +1,58 @@
+page-room {
+  ion-content {
+    //background-color: black !important;
+
+
+    max-width: 640px;
+    position: absolute;
+    left: 30%;
+    .scroll-content{
+      overflow-y: auto;
+    }
+    video {
+      width: 205px;
+      height: 240px;
+      //width: 100%;
+      //height: 100%;
+      background: black;
+    }
+    ion-chip {
+      font-size: 8px!important;
+      top: 2%;
+      position: absolute;
+    }
+    //ion-grid.subVideo {
+    //  position: fixed;
+    //  bottom: 0%;
+    //  height: 40%;
+    //}
+    ion-grid.topRow {
+     // position: fixed;
+      //top: 0%;
+      z-index: 100;
+    }
+    ion-icon {
+      display: inline-block;
+      font-size: 3.2em;
+      margin-left: 10%;
+    }
+    button {
+      display: inline-block !important;
+      margin-left: 5% !important
+    }
+
+    @media screen and (max-width: 640px) {
+      left: 0%;
+      video {
+        max-width: 160px;
+        width: 145px;
+        height: 187px;
+      }
+
+      button {
+        display: inline-block !important;
+        margin-left: 2% !important
+      }
+    }
+  }
+}

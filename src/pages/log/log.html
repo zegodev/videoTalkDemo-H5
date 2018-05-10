@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      日志
+    </ion-title>
+  </ion-navbar>
+  <ion-item>
+    <ion-label>过滤</ion-label>
+    <ion-select [(ngModel)]="typeID" multiple="false" cancelText="取消" okText="确定">
+      <ion-option   value="">全部</ion-option>
+      <ion-option *ngFor="let item of typeArray" [value]="item">{{item}}</ion-option>
+      <ion-option   value="###">其他</ion-option>
+    </ion-select>
+  </ion-item>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of logArray;trackBy:item" ><!--(click)="showDetail(item)"-->
+      <ion-label>{{item}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
+<!--<ion-footer>-->
+  <!--<ion-item>-->
+    <!--<button ion-button round full large (click)="sendLog()">发送日志</button>-->
+  <!--</ion-item>-->
+<!--</ion-footer>-->

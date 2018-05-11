@@ -58,6 +58,6 @@ setTimeout(()=>{
   opn('https://localhost:8101');
 
   console.log('http proxy server started on port 8101');
-},10000);
+},12000);
 
 

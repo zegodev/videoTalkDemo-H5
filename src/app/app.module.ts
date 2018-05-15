@@ -16,7 +16,7 @@ import {ConfigProvider} from '../providers/configProvider';
 import {HttpClientModule} from '@angular/common/http';
 import {RoomPage} from '../pages/room/room';
 import {SlidePipe} from "../util/pipe/slidePipe";
-import {LogfigProvider} from "../providers/logProvider";
+import {LogProvider} from "../providers/logProvider";
 import {LogPage} from "../pages/log/log";
 import {DeveloperPage} from "../pages/developer/developer";
 // import { TagSearchPage } from '../pages/tag-search/tag-search';
@@ -59,7 +59,7 @@ import {DeveloperPage} from "../pages/developer/developer";
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ConfigProvider,
-    LogfigProvider,
+    LogProvider,
     SlidePipe
   ]
 })

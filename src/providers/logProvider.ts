@@ -13,7 +13,7 @@ import {TimeUtil} from "../util/timeUtil";
  and Angular DI.
  */
 @Injectable()
-export class LogfigProvider {
+export class LogProvider {
 
   statck = [];
   sub = new BehaviorSubject('0');
@@ -24,31 +24,33 @@ export class LogfigProvider {
   constructor(public http: HttpClient, private config: ConfigProvider) {
     console.log('Hello LogfigProvider Provider');
     this.sub.subscribe(result=>{//防止数据过大
-        if(this.statck.length>500){
-          this.statck.shift();
-        }
+      if(this.statck.length>500){
+        this.statck.shift();
+      }else{
+        this.statck.push(result);
+      }
     });
 
 
     let that = this;
     this.nativeConsole =  {
-       log:window.console.log.bind(window),
-       debug:window.console.debug.bind(window),
-       warn:window.console.warn.bind(window),
-       error:window.console.error.bind(window)
+      log:window.console.log.bind(window),
+      debug:window.console.debug.bind(window),
+      warn:window.console.warn.bind(window),
+      error:window.console.error.bind(window)
     }
 
 
     window.console.debug = function(){
       let _result = [];
       [...Array.prototype.slice.call(arguments)].forEach(item=>{
-           if(typeof item === 'string'){
-             _result.push(item);
-           }else if(typeof item === 'object'){
-             _result.push(JSON.stringify(item));
-           }else{
-             that.nativeConsole.debug(item);
-           }
+        if(typeof item === 'string'){
+          _result.push(item);
+        }else if(typeof item === 'object'){
+          _result.push(JSON.stringify(item));
+        }else{
+          that.nativeConsole.debug(item);
+        }
       });
       that.debug(_result.join(','));
     }
@@ -122,7 +124,6 @@ export class LogfigProvider {
   debug(value: string) {
     this.typeLog(value);
     if (this.config.logLevel != 100 && this.config.logLevel <= 0 && value) {
-      this.statck.push(TimeUtil.format('hh:mm:ss S')+'|'+value);
       this.sub.next(TimeUtil.format('hh:mm:ss S')+'|'+value);
     }
     this.nativeConsole.debug(value);
@@ -131,7 +132,6 @@ export class LogfigProvider {
   info(value: string) {
     this.typeLog(value);
     if (this.config.logLevel != 100 && this.config.logLevel <= 1 && value) {
-      this.statck.push(TimeUtil.format('hh:mm:ss S')+'|'+value);
       this.sub.next(TimeUtil.format('hh:mm:ss S')+'|'+value);
     }
     this.nativeConsole.log(value);
@@ -140,7 +140,6 @@ export class LogfigProvider {
   warning(value: string) {
     this.typeLog(value);
     if (this.config.logLevel != 100 && this.config.logLevel <= 2 && value) {
-      this.statck.push(TimeUtil.format('hh:mm:ss S')+'|'+value);
       this.sub.next(TimeUtil.format('hh:mm:ss S')+'|'+value);
     }
     this.nativeConsole.warn(value);
@@ -149,7 +148,6 @@ export class LogfigProvider {
   errors(value: string) {
     this.typeLog(value);
     if (this.config.logLevel != 100 && this.config.logLevel <= 3 && value) {
-      this.statck.push(TimeUtil.format('hh:mm:ss S')+'|'+value);
       this.sub.next(TimeUtil.format('hh:mm:ss S')+'|'+value);
     }
     //this.nativeConsole.error(value);

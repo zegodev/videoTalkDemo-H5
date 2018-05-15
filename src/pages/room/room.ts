@@ -3,7 +3,7 @@ import {Component, ViewChild, ElementRef, ViewChildren, QueryList} from '@angula
 import {AlertController, Content, FabButton, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ConfigProvider} from '../../providers/configProvider';
 import {SlidePipe} from "../../util/pipe/slidePipe";
-import {LogfigProvider} from "../../providers/logProvider";
+import {LogProvider} from "../../providers/logProvider";
 import {LogPage} from "../log/log";
 
 /**
@@ -14,7 +14,6 @@ import {LogPage} from "../log/log";
  */
 //
 // @IonicPage()
-declare let ZegoClient: any;
 const ENUM_STREAM_UPDATE_TYPE = {added: 0, deleted: 1};
 
 @Component({
@@ -43,7 +42,7 @@ export class RoomPage {
   subVideoList: QueryList<ElementRef>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private config: ConfigProvider
-    , private slide: SlidePipe, private logger: LogfigProvider, public alertCtrl: AlertController) {
+    , private slide: SlidePipe, private logger: LogProvider, public alertCtrl: AlertController) {
     this.roomId = this.navParams.get('roomId') || this.config.getParameterByName('roomId');
     this.isTest = this.navParams.get('isTest');
     this.signUrl = this.navParams.get('signUrl');

@@ -4,7 +4,7 @@ import {Component,  OnInit} from '@angular/core';
 import {AlertController, NavController} from 'ionic-angular';
 import {RoomPage} from "../room/room";
 import {SettingtPage} from  "../setting/setting";
-import {LogfigProvider} from "../../providers/logProvider";
+import {LogProvider} from "../../providers/logProvider";
 import {CommonUtil} from "../../util/commonUtil";
 
 @Component({
@@ -14,7 +14,7 @@ import {CommonUtil} from "../../util/commonUtil";
 export class HomePage implements OnInit {
 
   isSupport = true;
-  constructor(public navCtrl: NavController,private logger:LogfigProvider, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController,private logger:LogProvider, public alertCtrl: AlertController) {
   }
 
   ngOnInit() {

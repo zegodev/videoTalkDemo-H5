@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AlertController, NavController} from 'ionic-angular';
 import {RoomPage} from "../room/room";
 import {SettingtPage} from "../setting/setting";
-import {LogfigProvider} from "../../providers/logProvider";
+import {LogProvider} from "../../providers/logProvider";
 
 @Component({
   selector: 'page-developer',
@@ -11,7 +11,7 @@ import {LogfigProvider} from "../../providers/logProvider";
 export class DeveloperPage implements OnInit {
 
 
-  constructor(public navCtrl: NavController, private logger: LogfigProvider, private alertCtr: AlertController) {
+  constructor(public navCtrl: NavController, private logger: LogProvider, private alertCtr: AlertController) {
 
   }
 

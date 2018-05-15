@@ -1,22 +1,51 @@
 import {Component} from '@angular/core';
 import {AlertController, NavController} from 'ionic-angular';
 import {ConfigProvider} from "../../providers/configProvider";
-import {LogfigProvider} from "../../providers/logProvider";
+import {LogProvider} from "../../providers/logProvider";
+import {Subscription} from "rxjs/Subscription";
 
-declare let ZegoClient: any;
+
 
 @Component({
   selector: 'page-setting',
   templateUrl: 'log.html'
 })
-export class LogPage {
+export class LogPage{
 
   logArray: string[] = [];
   typeArray: string[] = [];
   selectOption = {};
   _typeID = '';
 
-  constructor(public navCtrl: NavController, private log: LogfigProvider, private config: ConfigProvider, public alertCtrl: AlertController) {
+  subscription:Subscription;
+
+  constructor(public navCtrl: NavController, private log: LogProvider, private config: ConfigProvider, public alertCtrl: AlertController) {
+    this.myInit();
+  }
+
+
+  myInit(){
+    this.subscription = this.log.sub.subscribe(log=>{
+      if(this.typeID  === '###'){
+        if(this.isOther(log))this.logArray.unshift(log);
+      }else if(!!this.typeID){
+        log.indexOf('#' + this.typeID + '#') > -1 && this.logArray.unshift(log);
+      }else{
+        this.logArray.unshift(log);
+      }
+    })
+  }
+
+  refreshStatus = 'stop';
+  toggleRefresh(){
+    if(this.refreshStatus === 'stop'){
+      this.refreshStatus = 'refresh';
+      this.subscription.unsubscribe();
+    }else{
+      this.refreshStatus = 'stop';
+      this.typeID = this._typeID;
+      this.myInit();
+    }
 
   }
 
@@ -25,6 +54,7 @@ export class LogPage {
   }
 
   set typeID(value) {
+    this._typeID = value;
     if (value === '###') {
       this.logArray = this.log.statck.filter(item => {
         return this.isOther(item);
@@ -58,16 +88,13 @@ export class LogPage {
     this.logArray = [...this.log.statck];
     this.logArray.reverse();
     this.typeArray = Array.from(this.log._set);
-    // this.log.sub.subscribe(result => {
-    //   this.logArray.push(result as string);
-    // });
   }
 
 
   showDetail(value:string){
-     this.alertCtrl.create({
-       message:value
-     }).present();
+    this.alertCtrl.create({
+      message:value
+    }).present();
   }
 
   sendLog() {
@@ -92,4 +119,11 @@ export class LogPage {
     }
   }
 
+
+  /**
+   * 销毁组建钩子
+   */
+  ionViewWillUnload() {
+    this.subscription.unsubscribe();
+  }
 }

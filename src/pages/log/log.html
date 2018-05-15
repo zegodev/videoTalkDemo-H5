@@ -3,6 +3,7 @@
     <ion-title>
       日志
     </ion-title>
+    <button ion-fab mini float-end (click)="toggleRefresh()"> {{refreshStatus}}</button>
   </ion-navbar>
   <ion-item>
     <ion-label>过滤</ion-label>
@@ -23,7 +24,7 @@
 
 </ion-content>
 <!--<ion-footer>-->
-  <!--<ion-item>-->
-    <!--<button ion-button round full large (click)="sendLog()">发送日志</button>-->
-  <!--</ion-item>-->
+<!--<ion-item>-->
+<!--<button ion-button round full large (click)="sendLog()">发送日志</button>-->
+<!--</ion-item>-->
 <!--</ion-footer>-->

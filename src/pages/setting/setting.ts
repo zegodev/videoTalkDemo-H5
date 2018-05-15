@@ -2,8 +2,6 @@ import {Component, ViewChild} from '@angular/core';
 import {AlertController, Navbar, NavController} from 'ionic-angular';
 import {ConfigProvider} from "../../providers/configProvider";
 
-declare let ZegoClient: any;
-
 @Component({
   selector: 'page-setting',
   templateUrl: 'setting.html'
@@ -18,13 +16,13 @@ export class SettingtPage {
   audienceCreateRoom: boolean;
   audio: boolean;
   audioInput: string;
-  audioInputList:{label:string,deviceId:string}[] = [];
+  audioInputList: { label: string, deviceId: string }[] = [];
   video: boolean;
-  videoInput:string;
-  videoInputList:{label:string,deviceId:string}[] = [];
+  videoInput: string;
+  videoInputList: { label: string, deviceId: string }[] = [];
   videoQuality: number;
   horizontal: boolean;
-  muted:boolean;
+  muted: boolean;
 
   zg: any;
 
@@ -52,9 +50,13 @@ export class SettingtPage {
       this.zg = new ZegoClient();
       this.audioInputList = this.config.audioInputList;
       this.videoInputList = this.config.videoInputList;
-      //this.enumDevices();
-      this.navBar.backButtonClick = (e:UIEvent)=>{
-        this.showConfirm();
+
+      this.navBar.backButtonClick = (e: UIEvent) => {
+        if(this.isChange()){
+          this.showConfirm();
+        }else{
+          this.navCtrl.pop();
+        }
       }
     } else {
       setTimeout(() => {
@@ -64,61 +66,6 @@ export class SettingtPage {
 
   }
 
-
-
-  count = 0;
-
-  enumDevices() {
-    if (this.count == 3) {
-      this.count = 0;
-      return;
-    }
-
-    this.zg.enumDevices(deviceInfo => {
-      let label = true;
-      if (deviceInfo.microphones) {
-        for (var i = 0; i < deviceInfo.microphones.length; i++) {
-          if (!deviceInfo.microphones[i].label || deviceInfo.microphones[i].label.length == 0) {
-            label = false;
-            break;
-          }
-        }
-      }
-
-      if (deviceInfo.cameras && label) {
-        for (i = 0; i < deviceInfo.cameras.length; i++) {
-          if (!deviceInfo.cameras[i].label || deviceInfo.cameras[i].label.length == 0) {
-            label = false;
-            break;
-          }
-        }
-      }
-
-      if (label == false) {
-        ++this.count;
-        this.enumDevices();
-      }else {
-        if (deviceInfo.microphones) {
-          for (i = 0; i < deviceInfo.microphones.length; i++) {
-            this.audioInputList.push(deviceInfo.microphones[i]);
-            console.log("microphone: " + deviceInfo.microphones[i].label);
-          }
-        }
-
-        if (deviceInfo.cameras) {
-          for (i = 0; i < deviceInfo.cameras.length; i++) {
-            this.videoInputList.push(deviceInfo.cameras[i]);
-            console.log("camera: " + deviceInfo.cameras[i].label);
-          }
-        }
-
-        this.config.videoInputList = this.videoInputList;
-        this.config.audioInputList = this.audioInputList;
-      }
-    }, function (error) {
-      console.error("enum device error: " + error);
-    });
-  }
 
   showConfirm() {
     let confirm = this.alertCtrl.create({
@@ -159,7 +106,7 @@ export class SettingtPage {
     this.config.audioInput = this.audioInput;
     this.config.video = this.video;
     this.config.videoInput = this.videoInput;
-    this.config.videoQuality = this.videoQuality*1;
+    this.config.videoQuality = this.videoQuality * 1;
     this.config.horizontal = this.horizontal;
     this.config.muted = this.muted;
 
@@ -169,6 +116,27 @@ export class SettingtPage {
       this.navCtrl.goToRoot({
         animate: true
       });
+    }
+  }
+
+  isChange(): boolean {
+    if (
+      this.config.idName !== this.idName ||
+      this.config.appId !== this.appId ||
+      this.config.nickName !== this.nickName ||
+      this.config.logLevel !== this.logLevel ||
+      this.config.logUrl !== this.logUrl ||
+      this.config.audienceCreateRoom !== this.audienceCreateRoom ||
+      this.config.audio !== this.audio ||
+      this.config.audioInput !== this.audioInput ||
+      this.config.video !== this.video ||
+      this.config.videoInput !== this.videoInput ||
+      this.config.videoQuality != this.videoQuality ||
+      this.config.horizontal !== this.horizontal ||
+      this.config.muted !== this.muted) {
+      return true;
+    } else {
+      return false
     }
   }
 

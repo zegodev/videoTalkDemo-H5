@@ -12,8 +12,8 @@
         <button (click)="toggleVolume()"  ion-fab class="fab-in-list show">
         <ion-icon [name]="offOnVolume" ></ion-icon>
         </button>
-        <button (click)="changeUseCam()"  *ngIf="isSuportMultipCam" ion-fab class="fab-in-list show">
-          <ion-icon [name]="changeCam" ></ion-icon>
+        <button (click)="changeUseCam()"  ion-fab class="fab-in-list show" [ngClass]="{'cannotToggleCam':!isSuportMultipCam}" [disabled]="!isSuportMultipCam"><!--*ngIf=""-->
+          <ion-icon [name]="changeCam"></ion-icon>
         </button>
       </ion-col>
       <ion-col class="col" col-4>
@@ -53,3 +53,7 @@
   </ion-grid>
   <!-- src="http://pgccdn.v.baidu.com/3337716901_83761796_20170531032328.mp4?authorization=bce-auth-v1%2Fc308a72e7b874edd9115e4614e1d62f6%2F2017-05-30T19%3A23%3A47Z%2F-1%2F%2F5a8adb11aa2b20434b210c4d2fc979753abe5a38ff04e1d96c5325778e1e67ae&responseCacheControl=max-age%3D8640000&responseExpires=Fri%2C+08+Sep+2017+03%3A23%3A47+GMT&xcode=d90c0acc47d113c5f0f17500bcc7c802177b04a1bd5d94b9&time=1524582502&_=1524496107805" controls="controls" -->
 </ion-content>
+
+<ion-list>
+  <ion-item></ion-item>
+</ion-list>

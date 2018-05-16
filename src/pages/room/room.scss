@@ -9,6 +9,9 @@ page-room {
     .scroll-content{
       overflow-y: auto;
     }
+    .cannotToggleCam{
+      background-color:gray;
+    }
     video {
       width: 205px;
       height: 240px;

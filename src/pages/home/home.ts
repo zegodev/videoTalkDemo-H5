@@ -14,13 +14,13 @@ import {CommonUtil} from "../../util/commonUtil";
 export class HomePage implements OnInit {
 
   isSupport = true;
-  constructor(public navCtrl: NavController,private logger:LogProvider, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController,private logger:LogProvider, public alertCtr: AlertController) {
   }
 
   ngOnInit() {
     if(!CommonUtil.isSupportWebRtc()){
       this.isSupport = false;
-      this.alertCtrl.create({title: '哎呀，浏览器暂不支持体验webrtc哦！'}).present();
+      this.alertCtr.create({title: '哎呀，浏览器暂不支持体验webrtc哦！'}).present();
     }
     console.log('000');
   }
@@ -28,7 +28,8 @@ export class HomePage implements OnInit {
 
   openRoom(roomId: string, test = 0) {
     if(!roomId){
-      this.logger.info('iuput roomId is empty!')
+      this.logger.info('iuput roomId is empty!');
+      this.alertCtr.create({title: '请输入房间号'}).present();
       return;
     }
     this.navCtrl.push(RoomPage, {

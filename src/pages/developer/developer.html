@@ -25,15 +25,21 @@
   </ion-item>
 
   <ion-item>
-    <ion-label floating>流ID</ion-label>
+    <ion-label floating>推流ID</ion-label>
     <ion-input type="text" #streamId></ion-input>
   </ion-item>
+
+  <ion-item>
+    <ion-label floating>拉流ID</ion-label>
+    <ion-input type="text" #pullstreamId></ion-input>
+  </ion-item>
+
   <ion-item>
     <ion-label floating>请输入signUrl</ion-label>
     <ion-input type="text" #signUrl></ion-input>
   </ion-item>
 
 
-  <button ion-button full margin-top (click)="openRoom(roomId.value,isPublish.value,streamId.value,signUrl.value)">开始视频通话</button>
+  <button ion-button full margin-top (click)="openRoom(roomId.value,isPublish.value,streamId.value,pullstreamId.value,signUrl.value)">开始视频通话</button>
 
 </ion-content>

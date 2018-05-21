@@ -45,6 +45,10 @@ export class SettingtPage {
   @ViewChild(Navbar) navBar: Navbar;
 
 
+  /**
+   *
+   * 路由跳转钩子回掉，跳转到该页面，自动执行
+   * **/
   ngAfterViewInit() {
     if (typeof ZegoClient !== 'undefined') {
       this.zg = new ZegoClient();
@@ -67,6 +71,10 @@ export class SettingtPage {
   }
 
 
+  /**
+   *
+   * 提示框
+   * **/
   showConfirm() {
     let confirm = this.alertCtrl.create({
       title: '确定修改么?',
@@ -95,6 +103,11 @@ export class SettingtPage {
     confirm.present();
   }
 
+
+  /**
+   *
+   * 点击提示确定回掉，修改全局的设置
+   * **/
   sure() {
     this.config.idName = this.idName;
     this.config.appId = this.appId;
@@ -119,6 +132,11 @@ export class SettingtPage {
     }
   }
 
+
+  /**
+   *
+   * 判断是否有点击修改
+   * **/
   isChange(): boolean {
     if (
       this.config.idName !== this.idName ||

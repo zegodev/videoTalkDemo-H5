@@ -19,11 +19,19 @@ export class LogPage{
 
   subscription:Subscription;
 
+  /**
+   *
+   * 初始化
+   * **/
   constructor(public navCtrl: NavController, private log: LogProvider, private config: ConfigProvider, public alertCtrl: AlertController) {
     this.myInit();
   }
 
 
+  /**
+   *
+   * 订阅日志，日志的刷新，依赖rxjs6.0  https://cn.rx.js.org/
+   * **/
   myInit(){
     this.subscription = this.log.sub.subscribe(log=>{
       if(this.typeID  === '###'){
@@ -36,7 +44,23 @@ export class LogPage{
     })
   }
 
+
+  /**
+   *
+   *  路由钩子，在constructor后自执行
+   * **/
+
+  ngAfterViewInit() {
+    this.logArray = [...this.log.statck];
+    this.logArray.reverse();
+    this.typeArray = Array.from(this.log._set);
+  }
+
   refreshStatus = 'stop';
+  /**
+   *
+   * 取消订阅日志和重新订阅
+   * **/
   toggleRefresh(){
     if(this.refreshStatus === 'stop'){
       this.refreshStatus = 'refresh';
@@ -49,6 +73,8 @@ export class LogPage{
 
   }
 
+
+  /**typeID 双向绑定操作拆解  start  * **/
   get typeID() {
     return this._typeID;
   }
@@ -71,7 +97,13 @@ export class LogPage{
     }
 
   }
+  /**typeID 双向绑定操作拆解  end  * **/
 
+
+  /**
+   *
+   * 过滤非推拉流相关日志
+   * **/
   isOther(value: string): boolean {
     let _result = true;
     for (let i = 0; i < this.typeArray.length; i++) {
@@ -84,11 +116,7 @@ export class LogPage{
 
   }
 
-  ngAfterViewInit() {
-    this.logArray = [...this.log.statck];
-    this.logArray.reverse();
-    this.typeArray = Array.from(this.log._set);
-  }
+
 
 
   showDetail(value:string){

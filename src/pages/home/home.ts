@@ -17,6 +17,9 @@ export class HomePage implements OnInit {
   constructor(public navCtrl: NavController,private logger:LogProvider, public alertCtr: AlertController) {
   }
 
+  /****
+   * 生命周期钩子，自动执行
+   * ***/
   ngOnInit() {
     if(!CommonUtil.isSupportWebRtc()){
       this.isSupport = false;
@@ -26,6 +29,9 @@ export class HomePage implements OnInit {
   }
 
 
+  /****
+   * 跳转到直播间
+   * ***/
   openRoom(roomId: string, test = 0) {
     if(!roomId){
       this.logger.info('iuput roomId is empty!');
@@ -39,7 +45,9 @@ export class HomePage implements OnInit {
     })
   }
 
-
+  /****
+   * 打开设置页面
+   * ***/
   openSetting() {
     this.navCtrl.push(SettingtPage, {}, {
       animate: true,

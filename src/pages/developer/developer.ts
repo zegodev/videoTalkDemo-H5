@@ -19,16 +19,19 @@ export class DeveloperPage implements OnInit {
     console.log('000');
   }
 
-
-  openRoom(roomId: string, isPublish:boolean,streamId: string, signUrl: string) {
+  /****
+   * 跳转到直播间
+   * ***/
+  openRoom(roomId: string, isPublish:boolean,streamId: string,pullstreamId:string, signUrl: string) {
     if (!roomId) {
       this.logger.info('input roomId is empty!');
       this.alertCtr.create({title: '请输入房间号'}).present();
       return;
     }
     this.navCtrl.push(RoomPage, {
-      roomId:roomId,
+        roomId:roomId,
         publishStreamId:streamId,
+        pullstreamId,
         isPublish:isPublish,
         signUrl:signUrl,
         isTest:1
@@ -38,7 +41,9 @@ export class DeveloperPage implements OnInit {
   )
   }
 
-
+  /****
+   * 打开设置页面
+   * ***/
   openSetting() {
     this.navCtrl.push(SettingtPage, {}, {
       animate: true,

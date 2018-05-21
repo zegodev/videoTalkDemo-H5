@@ -31,6 +31,7 @@ export class RoomPage {
   publishStreamId: string;
   isTest: number;
   signUrl: string;
+  pullstreamId:string;
 
   isSuportMultipCam = false;
   isPublish = true;
@@ -41,11 +42,16 @@ export class RoomPage {
   @ViewChildren('subVideo')
   subVideoList: QueryList<ElementRef>;
 
+
+  /****
+   * 初始化
+   * ***/
   constructor(public navCtrl: NavController, public navParams: NavParams, private config: ConfigProvider
     , private slide: SlidePipe, private logger: LogProvider, public alertCtrl: AlertController) {
     this.roomId = this.navParams.get('roomId') || this.config.getParameterByName('roomId');
     this.isTest = this.navParams.get('isTest');
     this.signUrl = this.navParams.get('signUrl');
+    this.pullstreamId =  this.navParams.get('pullstreamId');
     this.isPublish = this.navParams.get('isPublish') === false ? false : true;
     this.publishStreamId = this.navParams.get('publishStreamId') || ('s-' + this.config.idName);
     if (!this.roomId) {
@@ -54,6 +60,9 @@ export class RoomPage {
     }
   }
 
+  /****
+   * 路由钩子，跳转到改页面自动执行
+   * ***/
   ngAfterViewInit() {
     if (typeof ZegoClient !== 'undefined') {
       this.init();
@@ -65,6 +74,11 @@ export class RoomPage {
 
   }
 
+
+
+  /****
+   *  初始化zego sdk
+   * ***/
   init() {
     this.zg = new ZegoClient();
     this.configZego();
@@ -149,6 +163,9 @@ export class RoomPage {
       this.logger.info(`#${this.publishStreamId}#get token success:${result}`);
       this.logger.info(`#${this.publishStreamId}#start login`);
       this.zg.login(this.roomId, 2, this.loginToken, streamList => {
+        if(this.pullstreamId){
+          streamList = [{stream_id:this.pullstreamId}]
+        }
         if(streamList.length >= 4) {
           this.alertCtrl.create({title: '房间太拥挤，换一个吧！'}).present();
           this.logoutRoom();
@@ -205,6 +222,9 @@ export class RoomPage {
   /**********直播中开关  start*****************/
   offOnCam = 'md-videocam';
 
+  /****
+   * 开或关闭摄像头
+   * ***/
   toggleCam() {
     if (this.offOnCam === 'md-videocam') {
       this.offOnCam = 'ios-videocam-outline';
@@ -220,6 +240,9 @@ export class RoomPage {
 
   offOnMic = 'md-mic';
 
+  /****
+   * 开或关闭麦克风
+   * ***/
   toggleMic() {
     if (this.offOnMic === 'md-mic') {
       this.offOnMic = 'ios-mic-outline';
@@ -235,6 +258,9 @@ export class RoomPage {
 
   offOnVolume = 'md-volume-up';
 
+  /****
+   * 开或关闭喇叭
+   * ***/
   toggleVolume() {
     if (this.offOnVolume === 'md-volume-up') {
       this.offOnVolume = 'md-volume-off';
@@ -251,6 +277,10 @@ export class RoomPage {
   }
 
   changeCam ='md-sync';
+
+  /****
+   * 切换前后摄像头
+   * ***/
   changeUseCam() {
     if (this.changeCam === 'md-sync') {
       this.changeCam = 'ios-sync-outline';
@@ -291,6 +321,10 @@ export class RoomPage {
   addedVideo = [];
   deletedVideo = [];
 
+
+  /****
+   * 绑定监听回掉函数，回掉钩子参见https://www.zego.im/html/document/#Live_Room/API_Instructions:web
+   * ***/
   listen() {
 
     let _config = {
@@ -386,6 +420,9 @@ export class RoomPage {
     }
   }
 
+  /****
+   * 退出房间
+   * ***/
   leaveRoom() {
     this.logger.info('leave room  and close stream');
     this.zg.stopPreview(this.localVideo.nativeElement);
@@ -397,6 +434,9 @@ export class RoomPage {
     this.zg.logout();
   }
 
+   /****
+   *  登出
+   * ***/
   logoutRoom() {
     this.logger.info(`#${this.publishStreamId}# logout`);
     if (this.loginRoom) {
@@ -420,6 +460,10 @@ export class RoomPage {
     }
   };
 
+
+  /****
+   * 打开日志页面
+   * ***/
   showLogs() {
     this.navCtrl.push(LogPage);
   }

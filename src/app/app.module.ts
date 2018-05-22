@@ -21,7 +21,7 @@ import {LogPage} from "../pages/log/log";
 import {DeveloperPage} from "../pages/developer/developer";
 // import { TagSearchPage } from '../pages/tag-search/tag-search';
 // import { MarkdownModule } from 'angular2-markdown';
-
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -37,6 +37,7 @@ import {DeveloperPage} from "../pages/developer/developer";
   imports: [
     BrowserModule,
     HttpClientModule,
+    IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp, {},{
       links: [
         {component: DeveloperPage, name: 'developer', segment: 'test'}

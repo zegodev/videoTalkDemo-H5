@@ -6,6 +6,7 @@ import {RoomPage} from "../room/room";
 import {SettingtPage} from  "../setting/setting";
 import {LogProvider} from "../../providers/logProvider";
 import {CommonUtil} from "../../util/commonUtil";
+import {Storage} from '@ionic/storage';
 
 @Component({
   selector: 'page-home',
@@ -14,7 +15,9 @@ import {CommonUtil} from "../../util/commonUtil";
 export class HomePage implements OnInit {
 
   isSupport = true;
-  constructor(public navCtrl: NavController,private logger:LogProvider, public alertCtr: AlertController) {
+  roomId = '';
+  constructor(public navCtrl: NavController,private logger:LogProvider,
+              private storage:Storage,public alertCtr: AlertController) {
   }
 
   /****
@@ -25,24 +28,28 @@ export class HomePage implements OnInit {
       this.isSupport = false;
       this.alertCtr.create({title: '哎呀，浏览器暂不支持体验webrtc哦！'}).present();
     }
-    console.log('000');
+    this.storage.get('homepage_roomid').then(result=>{
+      this.roomId = result;
+    })
   }
 
 
   /****
    * 跳转到直播间
    * ***/
-  openRoom(roomId: string, test = 0) {
-    if(!roomId){
+  openRoom(test = 0) {
+    if(!this.roomId){
       this.logger.info('iuput roomId is empty!');
       this.alertCtr.create({title: '请输入房间号'}).present();
       return;
     }
-    this.navCtrl.push(RoomPage, {
-      roomId, test
-    }, {
-      animate: false,
-    })
+    this.storage.set('homepage_roomid',this.roomId).then(()=>{
+      this.navCtrl.push(RoomPage, {
+        roomId:this.roomId, test
+      }, {
+        animate: false,
+      })
+    });
   }
 
   /****

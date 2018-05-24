@@ -24,10 +24,12 @@ export class HomePage implements OnInit {
    * 生命周期钩子，自动执行
    * ***/
   ngOnInit() {
+
     if(!CommonUtil.isSupportWebRtc()){
       this.isSupport = false;
       this.alertCtr.create({title: '哎呀，浏览器暂不支持体验webrtc哦！'}).present();
     }
+
     this.storage.get('homepage_roomid').then(result=>{
       this.roomId = result;
     })

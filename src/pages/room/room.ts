@@ -31,7 +31,7 @@ export class RoomPage {
   publishStreamId: string;
   isTest: number;
   signUrl: string;
-  pullstreamId:string;
+  pullstreamId: string;
 
   isSuportMultipCam = false;
   isPublish = true;
@@ -48,12 +48,14 @@ export class RoomPage {
    * ***/
   constructor(public navCtrl: NavController, public navParams: NavParams, private config: ConfigProvider
     , private slide: SlidePipe, private logger: LogProvider, public alertCtrl: AlertController) {
+    // 从路由获取参数
     this.roomId = this.navParams.get('roomId') || this.config.getParameterByName('roomId');
     this.isTest = this.navParams.get('isTest');
     this.signUrl = this.navParams.get('signUrl');
-    this.pullstreamId =  this.navParams.get('pullstreamId');
+    this.pullstreamId = this.navParams.get('pullstreamId');
     this.isPublish = this.navParams.get('isPublish') === false ? false : true;
     this.publishStreamId = this.navParams.get('publishStreamId') || ('s-' + this.config.idName);
+
     if (!this.roomId) {
       this.logger.warning(`#${this.publishStreamId}#roomId is empty,force to go back`);
       this.logoutRoom();
@@ -75,39 +77,43 @@ export class RoomPage {
   }
 
 
-
   /****
    *  初始化zego sdk
    * ***/
   init() {
     this.zg = new ZegoClient();
     this.configZego();
-    this.isSuportMultipCam = this.config.videoInputList.length>1? true :  false;
+
+    //判断是否有多个摄像头
+    this.isSuportMultipCam = this.config.videoInputList.length > 1 ? true : false;
+
+
+    //angular不鼓励直接操作dom,所以这里是通过监听页面vedio的dom变化拿到dom,再对dom进行操作
     this.subVideoList.changes.subscribe((list: QueryList<ElementRef>) => {
       if (list.length > 0) {
         let _count = 0;
+
         list.forEach(el => {
-          console.log(el);
+
           let result;
-          // setTimeout(() => {
           if (this.addedVideo.some(item => {
             return el.nativeElement.id == (item.stream_id);
           })) {
+
+
             el.nativeElement.muted = (this.offOnVolume === 'md-volume-off');
+
+
             result = this.zg.startPlayingStream(el.nativeElement.id, el.nativeElement);
 
 
             if (!result) {
               this.alertCtrl.create({title: '哎呀，播放失败啦！'}).present();
               el.nativeElement.style = 'display:none';
-              //this.useLocalStreamList.splice(_count, 1);
-              // console.error("play " + el.nativeElement.id + " return " + result);
-              // result = this.zg.startPlayingStream(el.nativeElement.id, el.nativeElement);
-               console.error("play " + el.nativeElement.id + " return " + result);
+              console.error("play " + el.nativeElement.id + " return " + result);
 
             }
           }
-          //}, 1000 * _count);
           _count++;
         });
         this.addedVideo = [];
@@ -115,8 +121,8 @@ export class RoomPage {
     });
 
 
-
-    window.onbeforeunload = ()=> {
+    // 暴力关闭浏览器引起的内存未释放
+    window.onbeforeunload = () => {
       console.log("beafore unload");
 
       if (this.loginRoom) {
@@ -145,8 +151,12 @@ export class RoomPage {
         remoteLogLevel: 0
       }
       this.logger.info(`#${this.publishStreamId}#config param:${JSON.stringify(_config)}`);
+
       this.zg.config(_config);
+
       this.login();
+
+      //测试页面相关，自定义拉流
       this.signUrl && this.zg.setCustomSignalUrl(this.signUrl);
     }
   }
@@ -157,27 +167,41 @@ export class RoomPage {
    *
    * */
   login() {
+
     this.logger.info(`#${this.publishStreamId}#get token start`);
+
     this.config.getToken().subscribe(result => {
+
       this.loginToken = result;
+
       this.logger.info(`#${this.publishStreamId}#get token success:${result}`);
       this.logger.info(`#${this.publishStreamId}#start login`);
       this.zg.login(this.roomId, 2, this.loginToken, streamList => {
-        if(this.pullstreamId){
-          streamList = [{stream_id:this.pullstreamId}]
+
+        //测试页面相关，自定了拉流id
+        if (this.pullstreamId) {
+          streamList = [{stream_id: this.pullstreamId}]
         }
-        if(streamList.length >= 4) {
+
+        //限制房间最多人数
+        if (streamList.length >= 4) {
           this.alertCtrl.create({title: '房间太拥挤，换一个吧！'}).present();
           this.logoutRoom();
           //window.location.reload();
-          return ;
+          return;
         }
+
         this.logger.info(`#${this.publishStreamId}#login success`);
+
         this.loginRoom = true;
+
+        // 监听sdk回掉
         this.listen();
+
         this.useLocalStreamList = [...this.useLocalStreamList, ...streamList];
         this.addedVideo = [...this.useLocalStreamList];
-        //this._useLocalStreamList = this.slide.transform(this.useLocalStreamList, 3);
+
+        //开始预览本地视频
         this.doPreviewPublish();
       }, (err) => {
         this.logger.errors(`#${this.publishStreamId}login failed:err.msg`);
@@ -194,32 +218,43 @@ export class RoomPage {
    *
    * */
   doPreviewPublish() {
+
     this.logger.info(`#${this.publishStreamId}#start Preview`);
+
     let _conf = {
       audio: this.config.audio,
-        audioInput: this.config.audioInput,
-        video: this.config.video,
-        videoInput: this.config.videoInput,
-        videoQuality: this.config.videoQuality,
-        horizontal: this.config.horizontal
+      audioInput: this.config.audioInput,
+      video: this.config.video,
+      videoInput: this.config.videoInput,
+      videoQuality: this.config.videoQuality,
+      horizontal: this.config.horizontal
     }
     this.logger.info(`#${this.publishStreamId}#  Preview  config ${JSON.stringify(_conf)}`);
+
     this.zg.startPreview(this.localVideo.nativeElement, _conf, () => {
+
       this.logger.info(`#${this.publishStreamId}#preview success`);
+
       this.isPublish && this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
+
       this.localVideo.nativeElement.muted = !this.config.muted;
+
+      //部分浏览器，获取设备名称时为空，只有在调用摄像头后才能获取到摄像头名称，在这里，对摄像头信息进行再次获取
       this.config.initEnumDevices();
     }, (error) => {
+
       this.logger.errors(`#${this.publishStreamId}#Preview  error ${JSON.stringify(error)}`);
-      let tipInfo = (error === 'NotAllowedError' ? '请打开允许使用摄像头使用权限' : '浏览器可能不支持，换一个试试吧！');
-      this.alertCtrl.create({title: tipInfo}).present();
+      let tipInfo = (error === 'NotAllowedError' ? '请打开允许使用摄像头使用权限' : '请检查摄像设备是否可用，再试试吧！');
+      this.alertCtrl.create({title: `${tipInfo}(${error})`}).present();
+
+      //预览失败，退出
       this.logoutRoom();
     });
   }
 
 
-
   /**********直播中开关  start*****************/
+
   offOnCam = 'md-videocam';
 
   /****
@@ -264,22 +299,22 @@ export class RoomPage {
   toggleVolume() {
     if (this.offOnVolume === 'md-volume-up') {
       this.offOnVolume = 'md-volume-off';
-      this.subVideoList.forEach(item=>{
+      this.subVideoList.forEach(item => {
         item.nativeElement.muted = true;
       });
     } else {
       this.offOnVolume = 'md-volume-up';
-      this.subVideoList.forEach(item=>{
+      this.subVideoList.forEach(item => {
         item.nativeElement.muted = false;
       });
     }
     ;
   }
 
-  changeCam ='md-sync';
+  changeCam = 'md-sync';
 
   /****
-   * 切换前后摄像头
+   * 切换前后摄像头 由于sdk暂不支持直接切换，所以我们这里实际上是先停止预览，再重新配置再预览
    * ***/
   changeUseCam() {
     if (this.changeCam === 'md-sync') {
@@ -294,14 +329,19 @@ export class RoomPage {
       audio: this.offOnMic === 'md-mic',
       audioInput: this.config.audioInput,
       video: this.offOnCam === 'md-videocam',
-      videoInput: this.config.toggleVideo(this.changeCam === 'md-sync'?0:1),
+      videoInput: this.config.toggleVideo(this.changeCam === 'md-sync' ? 0 : 1),
       videoQuality: this.config.videoQuality,
       horizontal: this.config.horizontal
     };
+
     this.logger.info(`#${this.publishStreamId}#  Preview  config ${JSON.stringify(_config)}`);
-    this.zg.startPreview(this.localVideo.nativeElement,_config , () => {
+
+    this.zg.startPreview(this.localVideo.nativeElement, _config, () => {
+
       this.logger.info(`#${this.publishStreamId}#preview success`);
+
       this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
+
       this.localVideo.nativeElement.muted = !this.config.muted;
 
     }, (error) => {
@@ -312,6 +352,7 @@ export class RoomPage {
 
   /**********直播中开关  end*****************/
 
+
   /*****
    *
    * 监听sdk的变化流事件，做出对应的措施
@@ -319,7 +360,6 @@ export class RoomPage {
    * */
 
   addedVideo = [];
-  deletedVideo = [];
 
 
   /****
@@ -425,25 +465,29 @@ export class RoomPage {
    * ***/
   leaveRoom() {
     this.logger.info('leave room  and close stream');
+
     this.zg.stopPreview(this.localVideo.nativeElement);
+
     this.zg.stopPublishingStream(this.publishStreamId);
-    //this.config.idName = '';
+
     for (var i = 0; i < this.useLocalStreamList.length; i++) {
       this.zg.stopPlayingStream(this.useLocalStreamList[i].stream_id);
     }
+
     this.zg.logout();
   }
 
-   /****
+  /****
    *  登出
    * ***/
   logoutRoom() {
     this.logger.info(`#${this.publishStreamId}# logout`);
+
     if (this.loginRoom) {
-      try{
+      try {
         this.leaveRoom();
-      }catch (e) {
-         console.error(e);
+      } catch (e) {
+        console.error(e);
       }
 
       this.loginRoom = false;
@@ -465,7 +509,9 @@ export class RoomPage {
    * 打开日志页面
    * ***/
   showLogs() {
+
     this.navCtrl.push(LogPage);
+
   }
 
 }

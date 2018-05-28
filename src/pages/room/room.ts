@@ -387,7 +387,7 @@ export class RoomPage {
         }  else {
           // trace("publish " + streamid + "error " + error.code);
           this.logger.errors(`#${streamid}# publish error ${error.msg}`);
-          this.alertCtrl.create({title: `推送流${streamid}失败，请检查网络，退出再试一次吧`}).present();
+          this.alertCtrl.create({title: `推流${streamid}失败，${error.msg}`}).present();
         }
       },
       onPublishQualityUpdate: (streamid, quality) => {

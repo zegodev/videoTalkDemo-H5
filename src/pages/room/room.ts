@@ -374,8 +374,7 @@ export class RoomPage {
         }
         else if (type == 2) {
           this.logger.info(`#${streamid}# play retry`);
-        }
-        else {
+        } else {
           // trace("publish " + streamid + "error " + error.code);
           this.logger.errors(`#${streamid}# play error ${error.msg}`);
         }
@@ -383,13 +382,12 @@ export class RoomPage {
       onPublishStateUpdate: (type, streamid, error) => {
         if (type == 0) {
           this.logger.info(`#${streamid}# publish  success`);
-        }
-        else if (type == 2) {
+        } else if (type == 2) {
           this.logger.info(`#${streamid}# publish  retry`);
-        }
-        else {
+        }  else {
           // trace("publish " + streamid + "error " + error.code);
           this.logger.errors(`#${streamid}# publish error ${error.msg}`);
+          this.alertCtrl.create({title: `推送流${streamid}失败，请检查网络，退出再试一次吧`}).present();
         }
       },
       onPublishQualityUpdate: (streamid, quality) => {

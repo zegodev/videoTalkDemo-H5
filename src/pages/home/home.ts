@@ -7,6 +7,7 @@ import {SettingtPage} from  "../setting/setting";
 import {LogProvider} from "../../providers/logProvider";
 import {CommonUtil} from "../../util/commonUtil";
 import {Storage} from '@ionic/storage';
+import {screenShareRoomPage} from "../screeshare/screenshare";
 
 @Component({
   selector: 'page-home',
@@ -40,18 +41,24 @@ export class HomePage implements OnInit {
    * 跳转到直播间
    * ***/
   openRoom(test = 0) {
+
     if(!this.roomId){
       this.logger.info('iuput roomId is empty!');
       this.alertCtr.create({title: '请输入房间号'}).present();
       return;
     }
+
+    let page = this.roomId === 'screen'?screenShareRoomPage:RoomPage;
+    page = RoomPage;
+
     this.storage.set('homepage_roomid',this.roomId).then(()=>{
-      this.navCtrl.push(RoomPage, {
+      this.navCtrl.push(page, {
         roomId:this.roomId, test
       }, {
         animate: false,
       })
     });
+
   }
 
   /****

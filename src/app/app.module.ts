@@ -22,6 +22,7 @@ import {DeveloperPage} from "../pages/developer/developer";
 // import { TagSearchPage } from '../pages/tag-search/tag-search';
 // import { MarkdownModule } from 'angular2-markdown';
 import { IonicStorageModule } from '@ionic/storage';
+import {screenShareRoomPage} from "../pages/screeshare/screenshare";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { IonicStorageModule } from '@ionic/storage';
     RoomPage,
     LogPage,
     SlidePipe,
-    DeveloperPage
+    DeveloperPage,
+    screenShareRoomPage
     // TagSearchPage
   ],
   imports: [
@@ -52,6 +54,7 @@ import { IonicStorageModule } from '@ionic/storage';
     HomePage,
     RoomPage,
     LogPage,
+    screenShareRoomPage,
     DeveloperPage
     // TagSearchPage
   ],

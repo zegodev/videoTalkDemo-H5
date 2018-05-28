@@ -33,13 +33,20 @@
 
       <ion-col col-sm-4>
         <ion-chip>
+          <ion-label color="secondary">{{'me-share:'+publishStreamId}}</ion-label>
+        </ion-chip>
+        <video #localVideo1 autoplay playsinline  muted></video>
+      </ion-col>
+
+      <ion-col col-sm-4>
+        <ion-chip>
           <ion-label color="secondary">{{'me:'+publishStreamId}}</ion-label>
         </ion-chip>
-        <video #localVideo autoplay playsinline  muted></video>
+        <video #localVideo2 autoplay playsinline  muted></video>
       </ion-col>
 
 
-        <ion-col col-sm-4 *ngFor="let item of useLocalStreamList; trackBy:identify;index as i">
+        <ion-col col-sm-4 *ngFor="let item of useLocalStreamList; trackBy:item?.stream_id;index as i">
           <ion-chip *ngIf="i<3">
             <ion-label color="secondary">{{item.stream_id}}</ion-label>
           </ion-chip>

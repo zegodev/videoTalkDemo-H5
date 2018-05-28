@@ -6,6 +6,8 @@ import {SlidePipe} from "../../util/pipe/slidePipe";
 import {LogProvider} from "../../providers/logProvider";
 import {LogPage} from "../log/log";
 
+
+
 /**
  * Generated class for the DetailPage page.
  *
@@ -17,10 +19,10 @@ import {LogPage} from "../log/log";
 const ENUM_STREAM_UPDATE_TYPE = {added: 0, deleted: 1};
 
 @Component({
-  selector: 'page-room',
-  templateUrl: 'room.html',
+  selector: 'screenshare-room',
+  templateUrl: 'screenshare.html',
 })
-export class RoomPage {
+export class screenShareRoomPage {
 
 
   roomId: string;
@@ -37,8 +39,12 @@ export class RoomPage {
   isPublish = true;
 
 
-  @ViewChild("localVideo")
-  localVideo: ElementRef;
+  @ViewChild("localVideo1")
+  localVideo1: ElementRef;
+  @ViewChild("localVideo2")
+  localVideo2: ElementRef;
+
+
   @ViewChildren('subVideo')
   subVideoList: QueryList<ElementRef>;
 
@@ -81,8 +87,7 @@ export class RoomPage {
    *  初始化zego sdk
    * ***/
   init() {
-    this.zg = new ZegoClient();
-    this.configZego();
+     this.screenshare();
 
     //判断是否有多个摄像头
     this.isSuportMultipCam = this.config.videoInputList.length > 1 ? true : false;
@@ -131,6 +136,18 @@ export class RoomPage {
       }
 
     };
+
+
+
+    // listen for messages from the content-script
+    window.addEventListener('message', event => {
+      const { data: { type, streamId }, origin } = event;
+      //user chose a stream
+      if (type === 'SS_DIALOG_SUCCESS') {
+        this.startScreenStreamFrom(streamId);
+      }
+
+    });
   }
 
 
@@ -160,6 +177,49 @@ export class RoomPage {
       this.signUrl && this.zg.setCustomSignalUrl(this.signUrl);
     }
   }
+
+
+
+
+  screenshare(){
+
+    if (!window['extensionInstalled']) {
+      this.alertCtrl.create({title:`
+        Please install the extension: 
+        1. Go to chrome://extensions
+        2. Check: "Enable Developer mode
+        3. Click: "Load the unpacked extension...
+        4. Choose "extension" folder from the repository
+        5. Reload this page
+      `}).present();
+    };
+
+    window.postMessage({ type: 'SS_UI_REQUEST', text: 'start' }, '*');
+  }
+
+  startScreenStreamFrom(streamId:string){
+
+    const mandatory = {
+      chromeMediaSource: 'desktop',
+      chromeMediaSourceId: streamId,
+      maxWidth: window.screen.width,
+      maxHeight: window.screen.height
+    };
+    const video = {  mandatory  };
+
+    const config = {};
+    config['audio'] = false;
+    config['video'] = {mandatory};
+    navigator.mediaDevices
+      .getUserMedia(config)
+      .then(stream => {
+        this.localVideo1.nativeElement.srcObject = stream;
+        this.zg = new ZegoClient();
+        this.configZego();
+      })
+      .catch(console.error);
+  }
+
 
   /*****
    * 1 获取token指令
@@ -227,17 +287,19 @@ export class RoomPage {
       video: this.config.video,
       videoInput: this.config.videoInput,
       videoQuality: this.config.videoQuality,
-      horizontal: this.config.horizontal
+      horizontal: this.config.horizontal,
+      externalCapture:true
     }
     this.logger.info(`#${this.publishStreamId}#  Preview  config ${JSON.stringify(_conf)}`);
 
-    this.zg.startPreview(this.localVideo.nativeElement, _conf, () => {
+
+    this.zg.startPreview(this.localVideo1.nativeElement, _conf, () => {
 
       this.logger.info(`#${this.publishStreamId}#preview success`);
 
-      this.isPublish && this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
+      this.isPublish && this.zg.startPublishingStream('s'+ this.publishStreamId, this.localVideo1.nativeElement);
 
-      this.localVideo.nativeElement.muted = !this.config.muted;
+      this.localVideo1.nativeElement.muted = !this.config.muted;
 
       //部分浏览器，获取设备名称时为空，只有在调用摄像头后才能获取到摄像头名称，在这里，对摄像头信息进行再次获取
       this.config.initEnumDevices();
@@ -250,6 +312,28 @@ export class RoomPage {
       //预览失败，退出
       this.logoutRoom();
     });
+
+    this.zg.startPreview(this.localVideo2.nativeElement, {..._conf,...{externalCapture:false}}, () => {
+
+      this.logger.info(`#${this.publishStreamId}#preview success`);
+
+      this.isPublish && this.zg.startPublishingStream(this.publishStreamId, this.localVideo2.nativeElement);
+
+      this.localVideo2.nativeElement.muted = !this.config.muted;
+
+      //部分浏览器，获取设备名称时为空，只有在调用摄像头后才能获取到摄像头名称，在这里，对摄像头信息进行再次获取
+      this.config.initEnumDevices();
+    }, (error) => {
+
+      this.logger.errors(`#${this.publishStreamId}#Preview  error ${JSON.stringify(error)}`);
+      let tipInfo = (error === 'NotAllowedError' ? '请打开允许使用摄像头使用权限' : '请检查摄像设备是否可用，再试试吧！');
+      this.alertCtrl.create({title: `${tipInfo}(${error})`}).present();
+
+      //预览失败，退出
+      this.logoutRoom();
+    });
+
+
   }
 
 
@@ -264,11 +348,11 @@ export class RoomPage {
     if (this.offOnCam === 'md-videocam') {
       this.offOnCam = 'ios-videocam-outline';
       this.logger.info(`#${this.publishStreamId}#close camera`);
-      this.zg.enableCamera(this.localVideo.nativeElement, false);
+      this.zg.enableCamera(this.localVideo2.nativeElement, false);
     } else {
       this.offOnCam = 'md-videocam';
       this.logger.info(`#${this.publishStreamId}#open camera`);
-      this.zg.enableCamera(this.localVideo.nativeElement, true);
+      this.zg.enableCamera(this.localVideo2.nativeElement, true);
     }
     ;
   }
@@ -282,11 +366,11 @@ export class RoomPage {
     if (this.offOnMic === 'md-mic') {
       this.offOnMic = 'ios-mic-outline';
       this.logger.info(`#${this.publishStreamId}#close micphone`);
-      this.zg.enableMicrophone(this.localVideo.nativeElement, false);
+      this.zg.enableMicrophone(this.localVideo2.nativeElement, false);
     } else {
       this.offOnMic = 'md-mic';
       this.logger.info(`#${this.publishStreamId}#open micphone`);
-      this.zg.enableMicrophone(this.localVideo.nativeElement, true);
+      this.zg.enableMicrophone(this.localVideo2.nativeElement, true);
     }
     ;
   }
@@ -323,7 +407,7 @@ export class RoomPage {
       this.changeCam = 'md-sync';
     }
     this.logger.info(`#${this.publishStreamId}#change camera`);
-    this.zg.stopPreview(this.localVideo.nativeElement);
+    this.zg.stopPreview(this.localVideo2.nativeElement);
     this.zg.stopPublishingStream(this.publishStreamId);
     let _config = {
       audio: this.offOnMic === 'md-mic',
@@ -336,13 +420,13 @@ export class RoomPage {
 
     this.logger.info(`#${this.publishStreamId}#  Preview  config ${JSON.stringify(_config)}`);
 
-    this.zg.startPreview(this.localVideo.nativeElement, _config, () => {
+    this.zg.startPreview(this.localVideo2.nativeElement, _config, () => {
 
       this.logger.info(`#${this.publishStreamId}#preview success`);
 
-      this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
+      this.zg.startPublishingStream(this.publishStreamId, this.localVideo2.nativeElement);
 
-      this.localVideo.nativeElement.muted = !this.config.muted;
+      this.localVideo2.nativeElement.muted = !this.config.muted;
 
     }, (error) => {
       this.logger.errors(`#${this.publishStreamId}#Preview  error ${JSON.stringify(error)}`);
@@ -464,9 +548,12 @@ export class RoomPage {
   leaveRoom() {
     this.logger.info('leave room  and close stream');
 
-    this.zg.stopPreview(this.localVideo.nativeElement);
+    this.zg.stopPreview(this.localVideo1.nativeElement);
+    this.zg.stopPreview(this.localVideo2.nativeElement);
 
     this.zg.stopPublishingStream(this.publishStreamId);
+    this.zg.stopPublishingStream('s'+this.publishStreamId);
+
 
     for (var i = 0; i < this.useLocalStreamList.length; i++) {
       this.zg.stopPlayingStream(this.useLocalStreamList[i].stream_id);
@@ -510,11 +597,6 @@ export class RoomPage {
 
     this.navCtrl.push(LogPage);
 
-  }
-
-
-  identify(index: number, item: {stream_id:string}) {
-    return item.stream_id;
   }
 
 }

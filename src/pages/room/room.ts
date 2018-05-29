@@ -204,9 +204,11 @@ export class RoomPage {
         //开始预览本地视频
         this.doPreviewPublish();
       }, (err) => {
-        this.logger.errors(`#${this.publishStreamId}login failed:err.msg`);
+        this.alertCtrl.create({title:`登录失败:${err.msg}`}).present();
+        this.logger.errors(`#${this.publishStreamId}login failed:${err.msg}`);
       });
     }, error => {
+      this.alertCtrl.create({title:`获取token失败`}).present();
       this.logger.errors(`#${this.publishStreamId}#get token failed`);
     })
   }

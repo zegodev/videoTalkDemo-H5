@@ -223,6 +223,8 @@ export class RoomPage {
 
     this.logger.info(`#${this.publishStreamId}#start Preview`);
 
+
+
     let _conf = {
       audio: this.config.audio,
       audioInput: this.config.audioInput,
@@ -231,6 +233,8 @@ export class RoomPage {
       videoQuality: this.config.videoQuality,
       horizontal: this.config.horizontal
     }
+
+
     this.logger.info(`#${this.publishStreamId}#  Preview  config ${JSON.stringify(_conf)}`);
 
     this.zg.startPreview(this.localVideo.nativeElement, _conf, () => {
@@ -241,8 +245,18 @@ export class RoomPage {
 
       this.localVideo.nativeElement.muted = !this.config.muted;
 
+      let _index = 0;
+      this.config.videoInputList&&this.config.videoInputList.forEach((item,index)=>{
+        if(item.deviceId == this.config.videoInput){
+          _index = index
+        }
+      })
+      this.changeCam = (_index === 0 ?'md-sync':'ios-sync-outline');
+
       //部分浏览器，获取设备名称时为空，只有在调用摄像头后才能获取到摄像头名称，在这里，对摄像头信息进行再次获取
       this.config.initEnumDevices();
+
+
     }, (error) => {
 
       this.logger.errors(`#${this.publishStreamId}#Preview  error ${JSON.stringify(error)}`);

@@ -6,12 +6,24 @@
     <button ion-fab mini float-end (click)="toggleRefresh()"> {{refreshStatus}}</button>
   </ion-navbar>
   <ion-item>
-    <ion-label>过滤</ion-label>
-    <ion-select [(ngModel)]="typeID" multiple="false" cancelText="取消" okText="确定">
+
+    <ion-label (click)="showPrompt()">
+      <button ion-button color="light">自定义过滤-{{this._customerKey}}</button>
+    </ion-label>
+
+    <ion-select [(ngModel)]="levelID" multiple="false" cancelText="取消" okText="确定">
+      <ion-option   value="debug">debug</ion-option>
+      <ion-option   value="info">info</ion-option>
+      <ion-option   value="warning">warnings</ion-option>
+      <ion-option   value="errors">errors</ion-option>
+    </ion-select>
+
+    <ion-select [(ngModel)]="typeID" multiple="false"  cancelText="取消" okText="确定" >
       <ion-option   value="">全部</ion-option>
       <ion-option *ngFor="let item of typeArray" [value]="item">{{item}}</ion-option>
       <ion-option   value="###">其他</ion-option>
     </ion-select>
+
   </ion-item>
 </ion-header>
 

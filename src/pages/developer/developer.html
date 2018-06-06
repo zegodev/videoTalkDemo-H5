@@ -19,6 +19,15 @@
     <ion-label floating>请输入房间号</ion-label>
     <ion-input type="text"   [(ngModel)]="roomId"></ion-input>
   </ion-item>
+
+  <ion-item>
+    <ion-label floating>appid</ion-label>
+    <ion-input type="text"   [(ngModel)]="appId"></ion-input>
+  </ion-item>
+  <!--<ion-item>-->
+    <!--<ion-label>是否登录</ion-label>-->
+    <!--<ion-toggle    [(ngModel)]="isLogin" checked="false"></ion-toggle>-->
+  <!--</ion-item>-->
   <ion-item>
     <ion-label>是否推流</ion-label>
     <ion-toggle    [(ngModel)]="isPublish" checked="true"></ion-toggle>
@@ -30,8 +39,8 @@
   </ion-item>
 
   <ion-item>
-    <ion-label floating>拉流ID</ion-label>
-    <ion-input type="text"  [(ngModel)]="pullstreamId" ></ion-input>
+    <ion-label floating>拉流IDS</ion-label>
+    <ion-input type="text"  [(ngModel)]="pullstreamId" placeholder="多个id请用','号隔开"></ion-input>
   </ion-item>
 
   <ion-item>

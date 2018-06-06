@@ -16,8 +16,12 @@ export class LogPage{
   typeArray: string[] = [];
   selectOption = {};
   _typeID = '';
+  _customerKey = '';
+  _levelID = 'debug';
 
   subscription:Subscription;
+
+
 
   /**
    *
@@ -34,14 +38,30 @@ export class LogPage{
    * **/
   myInit(){
     this.subscription = this.log.sub.subscribe(log=>{
-      if(this.typeID  === '###'){
-        if(this.isOther(log))this.logArray.unshift(log);
-      }else if(!!this.typeID){
+
+
+
+      if(this.levelID === 'info'&&log.indexOf('|debug|')>-1){
+           return
+      }else if(this.levelID === 'warning'&&(log.indexOf('|debug|')>-1||log.indexOf('|info|')>-1)){
+        return
+      }else if(this.levelID === 'errors'&&log.indexOf('|errors|')<0){
+        return
+      }
+
+      if(this._customerKey){
+        log.indexOf(this._customerKey) > -1 && this.logArray.unshift(log);
+      }else  if(this.typeID  === '###'){
+        if(this.isOther(log)){
+          this.logArray.unshift(log);
+        }
+      }else if( this.typeID ){
         log.indexOf('#' + this.typeID + '#') > -1 && this.logArray.unshift(log);
       }else{
         this.logArray.unshift(log);
       }
     })
+
   }
 
 
@@ -68,6 +88,7 @@ export class LogPage{
     }else{
       this.refreshStatus = 'stop';
       this.typeID = this._typeID;
+      this.levelID = this._levelID;
       this.myInit();
     }
 
@@ -79,8 +100,9 @@ export class LogPage{
     return this._typeID;
   }
 
-  set typeID(value) {
+  set typeID(value:string) {
     this._typeID = value;
+    this._customerKey = '';
     if (value === '###') {
       this.logArray = this.log.statck.filter(item => {
         return this.isOther(item);
@@ -92,10 +114,36 @@ export class LogPage{
         return item.indexOf('#' + value + '#') > -1;
       });
       this.logArray.reverse();
-    } else {
+    } else  {
       this.ngAfterViewInit();
     }
 
+  }
+
+
+
+  get levelID() {
+    return this._levelID;
+  }
+
+  set levelID(value:string){
+    this._levelID = value;
+    if(value === 'debug'){
+      this.logArray = this.log.statck;
+    }else if(value === 'info'){
+      this.logArray = this.log.statck.filter(item => {
+        return item.indexOf('|debug|') < 0;
+      });
+    }else if(value === 'warning'){
+       this.logArray = this.log.statck.filter(item => {
+        return (item.indexOf('|warning|') > -1||item.indexOf('|errors|') > -1);
+       });
+    }else if(value === 'errors'){
+      this.logArray = this.log.statck.filter(item => {
+        return item.indexOf('|errors|') > -1;
+      });
+    }
+    this.logArray.reverse();
   }
   /**typeID 双向绑定操作拆解  end  * **/
 
@@ -117,7 +165,41 @@ export class LogPage{
   }
 
 
-
+  showPrompt() {
+    const prompt = this.alertCtrl.create({
+      title: '自定义过滤',
+      message: "请输入要过滤的关键字",
+      inputs: [
+        {
+          name: 'key',
+          placeholder: '关键字',
+          value:this._customerKey
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            if( data.key && this._customerKey !== data.key){
+              this._typeID = '';
+              this._customerKey = data.key;
+              this.logArray = this.log.statck.filter(item => {
+                return item.indexOf(data.key) > -1;
+              });
+              this.logArray.reverse();
+            }
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
 
   showDetail(value:string){
     this.alertCtrl.create({

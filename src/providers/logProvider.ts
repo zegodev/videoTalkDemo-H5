@@ -124,7 +124,7 @@ export class LogProvider {
   debug(value: string) {
     this.typeLog(value);
     if (this.config.logLevel != 100 && this.config.logLevel <= 0 && value) {
-      this.sub.next(TimeUtil.format('hh:mm:ss S')+'|'+value);
+      this.sub.next(TimeUtil.format('hh:mm:ss S')+'|debug'+'|'+value);
     }
     this.nativeConsole.debug(value);
   }
@@ -132,7 +132,7 @@ export class LogProvider {
   info(value: string) {
     this.typeLog(value);
     if (this.config.logLevel != 100 && this.config.logLevel <= 1 && value) {
-      this.sub.next(TimeUtil.format('hh:mm:ss S')+'|'+value);
+      this.sub.next(TimeUtil.format('hh:mm:ss S')+'|info'+'|'+value);
     }
     this.nativeConsole.log(value);
   }
@@ -140,7 +140,7 @@ export class LogProvider {
   warning(value: string) {
     this.typeLog(value);
     if (this.config.logLevel != 100 && this.config.logLevel <= 2 && value) {
-      this.sub.next(TimeUtil.format('hh:mm:ss S')+'|'+value);
+      this.sub.next(TimeUtil.format('hh:mm:ss S')+'|warning'+'|'+value);
     }
     this.nativeConsole.warn(value);
   }
@@ -148,9 +148,9 @@ export class LogProvider {
   errors(value: string) {
     this.typeLog(value);
     if (this.config.logLevel != 100 && this.config.logLevel <= 3 && value) {
-      this.sub.next(TimeUtil.format('hh:mm:ss S')+'|'+value);
+      this.sub.next(TimeUtil.format('hh:mm:ss S')+'|errors'+'|'+value);
     }
-    //this.nativeConsole.error(value);
+    this.nativeConsole.error(value);
   }
 
   _set = new Set([]);

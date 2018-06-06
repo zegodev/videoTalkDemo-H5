@@ -168,7 +168,7 @@ export class LogPage{
   showPrompt() {
     const prompt = this.alertCtrl.create({
       title: '自定义过滤',
-      message: "请输入要过滤的关键字",
+     // message: "请输入要过滤的关键字",
       inputs: [
         {
           name: 'key',
@@ -178,13 +178,13 @@ export class LogPage{
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: '取消',
           handler: data => {
             console.log('Cancel clicked');
           }
         },
         {
-          text: 'Save',
+          text: '确定',
           handler: data => {
             if( data.key && this._customerKey !== data.key){
               this._typeID = '';

@@ -33,7 +33,7 @@ export class DeveloperPage implements OnInit {
       this.isPublish = settings['isPublish'];
       this.isLogin = settings['isLogin'];
       this.streamId = settings['publishStreamId'];
-      this.pullstreamId = settings['pullstreamId'];
+      this.pullstreamId = settings['pullstreamIds'];
       this.signUrl = settings['signUrl'];
     });
 
@@ -46,7 +46,7 @@ export class DeveloperPage implements OnInit {
     const param = {
       roomId: this.roomId,
       publishStreamId: this.streamId,
-      pullstreamId: this.pullstreamId,
+      pullstreamIds: this.pullstreamId,
       isPublish: this.isPublish,
       isLogin:this.isLogin,
       signUrl: this.signUrl,

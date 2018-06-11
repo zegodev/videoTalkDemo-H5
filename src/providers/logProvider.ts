@@ -41,75 +41,35 @@ export class LogProvider {
     }
 
 
-    window.console.debug = function(){
-      let _result = [];
-      [...Array.prototype.slice.call(arguments)].forEach(item=>{
-        if(typeof item === 'string'){
-          _result.push(item);
-        }else if(typeof item === 'object'){
-          _result.push(JSON.stringify(item));
-        }else{
-          that.nativeConsole.debug(item);
-        }
-      });
-      that.debug(_result.join(','));
+    let consoleOverWiter = function(level_n:'debug'|'log'|'warn'|'error',level:'debug'|'info'|'warning'|'errors'){
+      return function(){
+        let _result = [];
+        [...Array.prototype.slice.call(arguments)].forEach(item=>{
+          if(typeof item === 'string'){
+            _result.push(item);
+          }else if(typeof item === 'object'){
+            try {
+              _result.push(JSON.stringify(item));
+            }catch (e) {
+              that.nativeConsole[level_n](item);
+            }
+          }else{
+            that.nativeConsole[level_n](item);
+          }
+        });
+        that[level](_result.join(','));
+      }
     }
 
-    window.console.info = function(){
-      let _result = [];
-      [...Array.prototype.slice.call(arguments)].forEach(item=>{
-        if(typeof item === 'string'){
-          _result.push(item);
-        }else if(typeof item === 'object'){
-          _result.push(JSON.stringify(item));
-        }else{
-          that.nativeConsole.log(item);
-        }
-      });
-      that.info(_result.join(','));
-    }
+    window.console.debug =  consoleOverWiter('debug','debug');
 
-    window.console.log = function(){
-      let _result = [];
-      [...Array.prototype.slice.call(arguments)].forEach(item=>{
-        if(typeof item === 'string'){
-          _result.push(item);
-        }else if(typeof item === 'object'){
-          _result.push(JSON.stringify(item));
-        }else{
-          that.nativeConsole.log(item);
-        }
-      });
-      that.info(_result.join(','));
-    }
+    window.console.info =  consoleOverWiter('log','info');
 
-    window.console.warn = function(){
-      let _result = [];
-      [...Array.prototype.slice.call(arguments)].forEach(item=>{
-        if(typeof item === 'string'){
-          _result.push(item);
-        }else if(typeof item === 'object'){
-          _result.push(JSON.stringify(item));
-        }else{
-          that.nativeConsole.warn(item);
-        }
-      });
-      that.warning(_result.join(','));
-    }
+    window.console.log =  consoleOverWiter('log','info');
 
-    window.console.error = function(){
-      let _result = [];
-      [...Array.prototype.slice.call(arguments)].forEach(item=>{
-        if(typeof item === 'string'){
-          _result.push(item);
-        }else if(typeof item === 'object'){
-          _result.push(JSON.stringify(item));
-        }else{
-          that.nativeConsole.error(item);
-        }
-      });
-      that.errors(_result.join(','));
-    }
+    window.console.warn =   consoleOverWiter('warn','warning');
+
+    window.console.error =  consoleOverWiter('error','errors');
 
   }
 

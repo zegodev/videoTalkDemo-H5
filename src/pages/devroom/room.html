@@ -33,7 +33,7 @@
 
       <ion-col col-sm-4>
         <ion-chip>
-          <ion-label color="secondary">{{'me:'+publishStreamId }}</ion-label>
+          <ion-label color="secondary">{{'me:'+publishStreamId }}({{status[publishStreamId]}})</ion-label>
         </ion-chip>
         <video #localVideo autoplay playsinline  muted></video>
       </ion-col>
@@ -41,7 +41,7 @@
 
         <ion-col col-sm-4 *ngFor="let item of useLocalStreamList; trackBy:identify;index as i">
           <ion-chip *ngIf="i<3">
-            <ion-label color="secondary">{{item.stream_id}}</ion-label>
+            <ion-label color="secondary">{{item.stream_id}}({{status[item.stream_id]}})</ion-label>
           </ion-chip>
           <video *ngIf="i<3" #subVideo autoplay playsinline   muted data-id={{item.stream_id}}>
             您的浏览器不支持 video 标签。

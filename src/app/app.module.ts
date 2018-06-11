@@ -23,6 +23,7 @@ import {DeveloperPage} from "../pages/developer/developer";
 // import { MarkdownModule } from 'angular2-markdown';
 import { IonicStorageModule } from '@ionic/storage';
 import {screenShareRoomPage} from "../pages/screeshare/screenshare";
+import {DevRoomPage} from "../pages/devroom/room";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import {screenShareRoomPage} from "../pages/screeshare/screenshare";
     SettingtPage,
     HomePage,
     RoomPage,
+    DevRoomPage,
     LogPage,
     SlidePipe,
     DeveloperPage,
@@ -53,6 +55,7 @@ import {screenShareRoomPage} from "../pages/screeshare/screenshare";
     SettingtPage,
     HomePage,
     RoomPage,
+    DevRoomPage,
     LogPage,
     screenShareRoomPage,
     DeveloperPage

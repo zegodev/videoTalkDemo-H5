@@ -17,10 +17,10 @@ import {LogPage} from "../log/log";
 const ENUM_STREAM_UPDATE_TYPE = {added: 0, deleted: 1};
 
 @Component({
-  selector: 'page-room',
+  selector: 'page-devroom',
   templateUrl: 'room.html',
 })
-export class RoomPage {
+export class DevRoomPage {
 
 
   roomId: string;
@@ -29,15 +29,20 @@ export class RoomPage {
   loginRoom: boolean;
   useLocalStreamList: Array<any> = [];
   publishStreamId: string;
-
+  isTest: number;
+  signUrl: string;
+  pullstreamId:  {stream_id:string}[] = [];
 
   isSuportMultipCam = false;
-
+  isPublish = true;
+  isLogin = true;
 
   @ViewChild("localVideo")
   localVideo: ElementRef;
   @ViewChildren('subVideo')
   subVideoList: QueryList<ElementRef>;
+
+  status = {};
 
 
   /****
@@ -47,7 +52,19 @@ export class RoomPage {
     , private slide: SlidePipe, private logger: LogProvider, public alertCtrl: AlertController) {
     // 从路由获取参数
     this.roomId = this.navParams.get('roomId') || this.config.getParameterByName('roomId');
+    this.isTest = this.navParams.get('isTest');
+    this.signUrl = this.navParams.get('signUrl');
+    let _pullstreamIds:string = this.navParams.get('pullstreamIds');
+    if(_pullstreamIds){
+       _pullstreamIds.split(',').forEach(id=>{
+         this.pullstreamId.push({stream_id: id})
+      });
+
+    }
+    this.isPublish = this.navParams.get('isPublish') === false ? false : true;
+    this.isLogin = this.navParams.get('isLogin') === false ? false : true;
     this.publishStreamId = this.navParams.get('publishStreamId') || ('s' + this.config.idName);
+
     if (!this.roomId) {
       this.logger.warning(`#${this.publishStreamId}#roomId is empty,force to go back`);
       this.logoutRoom();
@@ -133,7 +150,6 @@ export class RoomPage {
    * */
   configZego() {
     if (this.roomId) {
-
       let _config = {
         appid: this.config.appId,
         idName: this.config.idName,
@@ -143,12 +159,15 @@ export class RoomPage {
         logUrl: this.config.logUrl,
         remoteLogLevel: 0
       }
-
       this.logger.info(`#${this.publishStreamId}#config param:${JSON.stringify(_config)}`);
 
       this.zg.config(_config);
 
-      this.login();
+      //测试页面相关，自定义拉流
+      this.signUrl && this.zg.setCustomSignalUrl(this.signUrl);
+
+
+       this.login();
     }
   }
 
@@ -161,6 +180,8 @@ export class RoomPage {
 
     this.logger.info(`#${this.publishStreamId}#get token start`);
 
+    this.status[this.publishStreamId] = 'logging';
+    this.status = {...this.status};
 
     this.config.getToken().subscribe(result => {
 
@@ -168,10 +189,14 @@ export class RoomPage {
 
       this.logger.info(`#${this.publishStreamId}#get token success:${result}`);
       this.logger.info(`#${this.publishStreamId}#start login`);
-      this.zg.login(this.roomId, 2, this.loginToken, streamList => {
+      this.zg.login(this.roomId, 2, this.loginToken,streamList=>{
 
+        this.status[this.publishStreamId] = 'login';
 
-
+        //测试页面相关，自定了拉流id
+        if (this.pullstreamId.length>0) {
+          streamList = this.pullstreamId;
+        }
 
         //限制房间最多人数
         if (streamList.length >= 4) {
@@ -191,10 +216,15 @@ export class RoomPage {
         this.useLocalStreamList = [...this.useLocalStreamList, ...streamList];
         this.addedVideo = [...this.useLocalStreamList];
 
+        //状态
+        this.useLocalStreamList.forEach(item => {
+          this.status[item.stream_id] = 'pulling'
+        });
+        this.status = {...this.status};
 
         //开始预览本地视频
         this.doPreviewPublish();
-      }, (err) => {
+      } , (err) => {
         this.alertCtrl.create({title: `登录失败:${err.msg}`}).present();
         this.logger.errors(`#${this.publishStreamId}login failed:${err.msg}`);
       });
@@ -203,6 +233,9 @@ export class RoomPage {
       this.logger.errors(`#${this.publishStreamId}#get token failed`);
     })
   }
+
+
+
 
 
   /*****
@@ -231,8 +264,10 @@ export class RoomPage {
 
       this.logger.info(`#${this.publishStreamId}#preview success`);
 
+      this.status[this.publishStreamId] = 'previewed';
+      this.status = {...this.status};
 
-      this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
+      this.isPublish && this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
 
       this.localVideo.nativeElement.muted = !this.config.muted;
 
@@ -378,52 +413,54 @@ export class RoomPage {
       onPlayStateUpdate: (type, streamid, error) => {
         if (type == 0) {
           this.logger.info(`#${streamid}# play  success`);
+          this.status[streamid] = 'play';
         }
         else if (type == 2) {
           this.logger.info(`#${streamid}# play retry`);
         } else {
           // trace("publish " + streamid + "error " + error.code);
-
+          this.status[streamid] = 'play';
+          this.status[streamid] = 'play err';
           this.logger.errors(`#${streamid}# play error ${error.msg}`);
           let _msg = error.msg;
-          if (error.msg.indexOf('server session closed, reason: ') > -1) {
-            let code = error.msg.replace('server session closed, reason: ', '');
-            if (code == 21) {
+          if(error.msg.indexOf('server session closed, reason: ')>-1){
+            let code = error.msg.replace('server session closed, reason: ','');
+            if(code == 21){
               _msg = '音频编解码不支持(opus)';
-            } else if (code == 22) {
+            }else if(code == 22){
               _msg = '视频编解码不支持(H264)'
-            } else if (code == 20) {
+            }else if(code == 20){
               _msg = 'sdp 解释错误';
             }
           }
           this.alertCtrl.create({title: `拉流${streamid}失败，${_msg}`}).present();
         }
-
+        this.status = {...this.status};
       },
       onPublishStateUpdate: (type, streamid, error) => {
         if (type == 0) {
-
+          this.status[streamid] = 'publish suc';
           this.logger.info(`#${streamid}# publish  success`);
         } else if (type == 2) {
           this.logger.info(`#${streamid}# publish  retry`);
         } else {
           // trace("publish " + streamid + "error " + error.code);
-
+          this.status[streamid] = 'publish err';
           this.logger.errors(`#${streamid}# publish error ${error.msg}`);
           let _msg = error.msg;
-          if (error.msg.indexOf('server session closed, reason: ') > -1) {
-            let code = error.msg.replace('server session closed, reason: ', '');
-            if (code == 21) {
-              _msg = '音频编解码不支持(opus)';
-            } else if (code == 22) {
-              _msg = '视频编解码不支持(H264)'
-            } else if (code == 20) {
-              _msg = 'sdp 解释错误';
-            }
+          if(error.msg.indexOf('server session closed, reason: ')>-1){
+             let code = error.msg.replace('server session closed, reason: ','');
+             if(code == 21){
+               _msg = '音频编解码不支持(opus)';
+             }else if(code == 22){
+               _msg = '视频编解码不支持(H264)'
+             }else if(code == 20){
+               _msg = 'sdp 解释错误';
+             }
           }
           this.alertCtrl.create({title: `推流${streamid}失败，${_msg}`}).present();
         }
-
+        this.status = {...this.status};
       },
       onPublishQualityUpdate: (streamid, quality) => {
         this.logger.info("#" + streamid + "#" + "publish " + " audio: " + quality.audioBitrate + " video: " + quality.videoBitrate + " fps: " + quality.videoFPS);
@@ -460,6 +497,10 @@ export class RoomPage {
             this.addedVideo.push(streamList[i]);
           }
 
+          this.addedVideo.forEach(item => {
+            this.status[item.stream_id] = 'pulling'
+          });
+          this.status = {...this.status};
         } else if (type == ENUM_STREAM_UPDATE_TYPE.deleted) {
           for (var k = 0; k < this.useLocalStreamList.length; k++) {
             for (var j = 0; j < streamList.length; j++) {

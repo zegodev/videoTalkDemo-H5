@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertController, NavController} from 'ionic-angular';
-import {RoomPage} from "../room/room";
 import {SettingtPage} from "../setting/setting";
 import {LogProvider} from "../../providers/logProvider";
 import {Storage} from '@ionic/storage';
 import {ConfigProvider} from "../../providers/configProvider";
+import {DevRoomPage} from "../devroom/room";
 
 @Component({
   selector: 'page-developer',
@@ -29,12 +29,14 @@ export class DeveloperPage implements OnInit {
 
   ngOnInit() {
     this.storage.get('develop_setting').then(settings => {
-      this.roomId = settings['roomId'];
-      this.isPublish = settings['isPublish'];
-      this.isLogin = settings['isLogin'];
-      this.streamId = settings['publishStreamId'];
-      this.pullstreamId = settings['pullstreamIds'];
-      this.signUrl = settings['signUrl'];
+      if(settings){
+        this.roomId = settings['roomId'];
+        this.isPublish = settings['isPublish'];
+        this.isLogin = settings['isLogin'];
+        this.streamId = settings['publishStreamId'];
+        this.pullstreamId = settings['pullstreamIds'];
+        this.signUrl = settings['signUrl'];
+      }
     });
 
   }
@@ -65,7 +67,7 @@ export class DeveloperPage implements OnInit {
         return;
       }
       this.config.appId = this.appId*1;
-      this.navCtrl.push(RoomPage, param, {
+      this.navCtrl.push(DevRoomPage, param, {
           animate: false,
         }
       )

@@ -21,7 +21,7 @@
     <ion-select [(ngModel)]="typeID" multiple="false"  cancelText="取消" okText="确定" >
       <ion-option   value="">全部</ion-option>
       <ion-option *ngFor="let item of typeArray" [value]="item">{{item}}</ion-option>
-      <ion-option   value="###">其他</ion-option>
+      <ion-option   value="###" >其他</ion-option>
     </ion-select>
 
   </ion-item>

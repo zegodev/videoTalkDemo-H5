@@ -2,7 +2,7 @@
 export class CommonUtil {
 
   static isSupportWebRtc() :boolean{
-    if (!navigator.getUserMedia  || !RTCPeerConnection) {
+    if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia ) || !RTCPeerConnection) {
       return false;
     } else {
       return true;

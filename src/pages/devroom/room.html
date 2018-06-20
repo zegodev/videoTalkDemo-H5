@@ -43,7 +43,7 @@
           <ion-chip *ngIf="i<3">
             <ion-label color="secondary">{{item.stream_id}}({{status[item.stream_id]}})</ion-label>
           </ion-chip>
-          <video *ngIf="i<3" #subVideo autoplay playsinline   muted data-id={{item.stream_id}}>
+          <video *ngIf="i<3" #subVideo autoplay playsinline     data-id={{item.stream_id}}>
             您的浏览器不支持 video 标签。
           </video>
         </ion-col>

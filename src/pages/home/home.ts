@@ -62,6 +62,14 @@ export class HomePage implements OnInit {
     }).catch(err=>{
       console.log(err);
     });
+    
+    // setTimeout(()=>{
+    //   this.navCtrl.push(page, {
+    //     roomId:this.roomId, test
+    //   }, {
+    //     animate: false,
+    //   })
+    // },1000);
 
   }
 

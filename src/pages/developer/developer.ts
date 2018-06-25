@@ -66,6 +66,12 @@ export class DeveloperPage implements OnInit {
         this.alertCtr.create({title: 'appid只能是数字'}).present();
         return;
       }
+      
+      if(this.signUrl&&this.signUrl.indexOf('wss')<0){
+        this.logger.info('signUrl   is not correct!');
+        this.alertCtr.create({title: 'signUrl必须是wss开头'}).present();
+        return;
+      }
       this.config.appId = this.appId*1;
       this.navCtrl.push(DevRoomPage, param, {
           animate: false,

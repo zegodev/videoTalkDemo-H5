@@ -74,7 +74,7 @@ export class DeveloperPage implements OnInit {
     this.config.appId = this.appId*1;
     
     this.storage.set('develop_setting', param).then(() => {
-      param.roomId = 'zego-developement' + param.roomId;
+      if(param.signUrl)param.roomId = 'zego-developement' + param.roomId;
       this.navCtrl.push(DevRoomPage, param, {
           animate: false,
         }

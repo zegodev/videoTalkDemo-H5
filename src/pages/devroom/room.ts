@@ -194,7 +194,7 @@ export class DevRoomPage {
         this.status[this.publishStreamId] = 'login';
 
         //测试页面相关，自定了拉流id
-        if (this.pullstreamId.length>0||this.signUrl) {
+        if (this.pullstreamId.length>0) {
           streamList = this.pullstreamId;
         }
 

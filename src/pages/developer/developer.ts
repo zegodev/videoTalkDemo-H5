@@ -46,7 +46,7 @@ export class DeveloperPage implements OnInit {
    * ***/
   openRoom() {
     const param = {
-      roomId: this.roomId,
+      roomId:  this.roomId,
       publishStreamId: this.streamId,
       pullstreamIds: this.pullstreamId,
       isPublish: this.isPublish,
@@ -54,25 +54,27 @@ export class DeveloperPage implements OnInit {
       signUrl: this.signUrl,
       isTest: 1
     };
-
+  
+    if (!this.roomId) {
+      this.logger.info('input roomId is empty!');
+      this.alertCtr.create({title: '请输入房间号'}).present();
+      return;
+    }
+    if( typeof  (this.appId*1) !== 'number'){
+      this.logger.info('input appid is not number!');
+      this.alertCtr.create({title: 'appid只能是数字'}).present();
+      return;
+    }
+  
+    if(this.signUrl&&this.signUrl.indexOf('wss')<0){
+      this.logger.info('signUrl   is not correct!');
+      this.alertCtr.create({title: 'signUrl必须是wss开头'}).present();
+      return;
+    }
+    this.config.appId = this.appId*1;
+    
     this.storage.set('develop_setting', param).then(() => {
-      if (!this.roomId) {
-        this.logger.info('input roomId is empty!');
-        this.alertCtr.create({title: '请输入房间号'}).present();
-        return;
-      }
-      if( typeof  (this.appId*1) !== 'number'){
-        this.logger.info('input appid is not number!');
-        this.alertCtr.create({title: 'appid只能是数字'}).present();
-        return;
-      }
-      
-      if(this.signUrl&&this.signUrl.indexOf('wss')<0){
-        this.logger.info('signUrl   is not correct!');
-        this.alertCtr.create({title: 'signUrl必须是wss开头'}).present();
-        return;
-      }
-      this.config.appId = this.appId*1;
+      param.roomId = 'zego-developement' + param.roomId;
       this.navCtrl.push(DevRoomPage, param, {
           animate: false,
         }

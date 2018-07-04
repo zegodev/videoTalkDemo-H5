@@ -114,15 +114,16 @@ export class RoomPage {
 
 
     // 暴力关闭浏览器引起的内存未释放
-    window.onbeforeunload = () => {
-      console.log("beafore unload");
-
+    const isOnIOS = navigator.userAgent.match (/iPad/i) || navigator.userAgent.match (/iPhone/i);
+    const eventName = isOnIOS ? "pagehide" : "beforeunload";
+    window.addEventListener (eventName, (event) => {
+      window.event.cancelBubble = true; // Don't know if this works on iOS but it might!
+      console.log ("beafore unload");
       if (this.loginRoom) {
-        this.leaveRoom();
+        this.logoutRoom ();
         this.loginRoom = false;
       }
-
-    };
+    });
   }
 
 

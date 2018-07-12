@@ -392,6 +392,43 @@ export class DevRoomPage {
     });
 
   }
+  
+  togglePullStream(){
+    const prompt = this.alertCtrl.create({
+      title: '',
+      message: "请输入拉流ID，多个流用逗号隔开",
+      inputs: [
+        {
+          name: 'pullStreamIds',
+          placeholder: 'Title'
+        },
+      ],
+      buttons: [
+        {
+          text: '取消',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: '确定',
+          handler: data => {
+            for (let i = 0; i < this.useLocalStreamList.length; i++) {
+              this.zg.stopPlayingStream(this.useLocalStreamList[i].stream_id);
+            }
+            this.useLocalStreamList = [];
+            data.pullStreamIds.split(',').forEach(id=>{
+              this.useLocalStreamList.push({stream_id: id});
+            });
+            this.useLocalStreamList = [... this.useLocalStreamList];
+            this.addedVideo = [...this.useLocalStreamList];
+          }
+        }
+      ]
+    });
+    prompt.present();
+  
+  }
 
   /**********直播中开关  end*****************/
 

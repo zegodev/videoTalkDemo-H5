@@ -224,7 +224,7 @@ export class DevRoomPage {
         this.status = {...this.status};
 
         //开始预览本地视频
-        this.doPreviewPublish();
+        this.isPublish&&this.doPreviewPublish();
       } , (err) => {
         this.alertCtrl.create({title: `登录失败:${err.msg}`}).present();
         this.logger.errors(`#${this.publishStreamId}login failed:${err.msg}`);

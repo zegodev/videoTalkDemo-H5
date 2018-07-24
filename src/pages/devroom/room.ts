@@ -225,6 +225,9 @@ export class DevRoomPage {
 
         //开始预览本地视频
         this.isPublish&&this.doPreviewPublish();
+        if(!this.isPublish){
+          this.offOnVolume = 'md-volume-off';
+        }
       } , (err) => {
         this.alertCtrl.create({title: `登录失败:${err.msg}`}).present();
         this.logger.errors(`#${this.publishStreamId}login failed:${err.msg}`);
@@ -277,7 +280,7 @@ export class DevRoomPage {
         if (item.deviceId == this.config.videoInput) {
           _index = index
         }
-      })
+      });
       this.changeCam = (_index === 0 ? 'md-sync' : 'ios-sync-outline');
 
       //部分浏览器，获取设备名称时为空，只有在调用摄像头后才能获取到摄像头名称，在这里，对摄像头信息进行再次获取

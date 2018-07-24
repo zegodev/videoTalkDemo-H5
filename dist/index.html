@@ -38,8 +38,11 @@
         .catch(err => console.error('Error', err));
     }
   </script>-->
+  <script defer src="assets/lib/md5.min.js" ></script>
+  <script defer src="assets/lib/base64.min.js" ></script>
 
-  <link href="build/main.css?v=35" rel="stylesheet">
+
+  <link href="build/main.css?v=36" rel="stylesheet">
 
 </head>
 
@@ -48,51 +51,17 @@
   <!-- Ionic's root component and where the app will load -->
   <ion-app></ion-app>
 
-  <script>
-
-
-
-    // listen for messages from the content-script
-    window.addEventListener('message', event => {
-      const { data: { type, streamId }, origin } = event;
-
-      // NOTE: you should discard foreign events
-      if (origin !== window.location.origin) {
-        console.warn(
-          'ScreenStream: you should discard foreign event from origin:',
-          origin
-        );
-        // return;
-      }
-
-      // content-script will send a 'SS_PING' msg if extension is installed
-      if (type === 'SS_PING') {
-        window.extensionInstalled = true;
-      }
-
-      // user chose a stream
-      // if (type === 'SS_DIALOG_SUCCESS') {
-      //   startScreenStreamFrom(streamId);
-      // }
-
-      // user clicked on 'cancel' in choose media dialog
-      if (type === 'SS_DIALOG_CANCEL') {
-        console.log('User cancelled!');
-      }
-    });
-  </script>
-
-  <script defer src="assets/lib/zego/jZego-rtc-1.0.4.js?v=35" ></script>
+  <script defer src="assets/lib/zego/jZego-rtc-1.0.4.js?v=36" ></script>
 
   <!-- The polyfills js is generated during the build process -->
   <script defer src="build/polyfills.js"></script>
 
   <!-- The vendor js is generated during the build process
        It contains all of the dependencies in node_modules -->
-  <script defer src="build/vendor.js?v=35"></script>
+  <script defer src="build/vendor.js?v=36"></script>
 
   <!-- The main bundle js is generated during the build process -->
-  <script defer src="build/main.js?v=35"></script>
+  <script defer src="build/main.js?v=36"></script>
 
 
 

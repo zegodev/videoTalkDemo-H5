@@ -24,6 +24,8 @@ import {DeveloperPage} from "../pages/developer/developer";
 import { IonicStorageModule } from '@ionic/storage';
 import {screenShareRoomPage} from "../pages/screeshare/screenshare";
 import {DevRoomPage} from "../pages/devroom/room";
+import {SupportPage} from "../pages/support/support";
+import {SupportRoomPage} from "../pages/supportRoom/room";
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import {DevRoomPage} from "../pages/devroom/room";
     LogPage,
     SlidePipe,
     DeveloperPage,
-    screenShareRoomPage
+    screenShareRoomPage,
+    SupportPage,
+    SupportRoomPage,
     // TagSearchPage
   ],
   imports: [
@@ -44,7 +48,8 @@ import {DevRoomPage} from "../pages/devroom/room";
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp, {},{
       links: [
-        {component: DeveloperPage, name: 'developer', segment: 'test'}
+        {component: DeveloperPage, name: 'developer', segment: 'test'},
+        {component: SupportPage, name: 'support', segment: 'support'}
       ]
     })
     // MarkdownModule
@@ -58,7 +63,9 @@ import {DevRoomPage} from "../pages/devroom/room";
     DevRoomPage,
     LogPage,
     screenShareRoomPage,
-    DeveloperPage
+    DeveloperPage,
+    SupportPage,
+    SupportRoomPage,
     // TagSearchPage
   ],
   providers: [

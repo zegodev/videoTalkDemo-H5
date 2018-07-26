@@ -53,6 +53,7 @@ export class SupportRoomPage {
     // 从路由获取参数
     this.roomId = this.navParams.get('roomId') || this.config.getParameterByName('roomId');
     this.publishStreamId = this.navParams.get('publishStreamId') || ('s' + this.config.idName);
+    this.signUrl = this.navParams.get('signUrl');
     if (!this.roomId) {
       this.logger.warning(`#${this.publishStreamId}#roomId is empty,force to go back`);
       this.logoutRoom();
@@ -153,7 +154,7 @@ export class SupportRoomPage {
       this.zg.config(_config);
 
       //测试页面相关，自定义拉流
-      this.signUrl && this.zg.setCustomSignalUrl(this.signUrl);
+     // this.signUrl && this.zg.setCustomSignalUrl(this.signUrl);
 
 
        this.login();

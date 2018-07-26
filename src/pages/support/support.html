@@ -26,6 +26,12 @@
     <ion-input type="text"   [(ngModel)]="appId"></ion-input>
   </ion-item>
 
+  <ion-item>
+    <ion-label floating>请输入server</ion-label>
+    <ion-input type="text"  [(ngModel)]="signUrl" ></ion-input>
+  </ion-item>
+
+
 
 
   <button ion-button full  tappable margin-top (click)="openRoom()">开始视频通话</button>

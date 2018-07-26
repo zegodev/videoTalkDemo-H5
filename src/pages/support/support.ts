@@ -71,6 +71,7 @@ export class SupportPage implements OnInit {
     }
    
     this.config.appId = this.appId*1;
+    this.config.server = this.signUrl;
   
     this.storage.set('support_setting', param).then(() => {
       if(param.signUrl)param.roomId = 'zego-support' + param.roomId;

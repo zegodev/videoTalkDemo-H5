@@ -443,13 +443,12 @@ export class SupportRoomPage {
       onPlayStateUpdate: (type, streamid, error) => {
         if (type == 0) {
           this.logger.info(`#${streamid}# play  success`);
-          this.status[streamid] = 'play';
+          this.status[streamid] = 'play suc';
         }
         else if (type == 2) {
           this.logger.info(`#${streamid}# play retry`);
         } else {
           // trace("publish " + streamid + "error " + error.code);
-          this.status[streamid] = 'play';
           this.status[streamid] = 'play err';
           this.logger.errors(`#${streamid}# play error ${error.msg}`);
           let _msg = error.msg;

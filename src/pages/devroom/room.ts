@@ -454,7 +454,7 @@ export class DevRoomPage {
       onPlayStateUpdate: (type, streamid, error) => {
         if (type == 0) {
           this.logger.info(`#${streamid}# play  success`);
-          this.status[streamid] = 'play';
+          this.status[streamid] = 'play suc';
         }
         else if (type == 2) {
           this.logger.info(`#${streamid}# play retry`);

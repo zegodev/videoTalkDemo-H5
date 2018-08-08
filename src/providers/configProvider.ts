@@ -1,15 +1,13 @@
 import {Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {CommonUtil} from "../util/commonUtil";
-
+import {ZegoClient} from "choui-zego-rtc";
 /*
  Generated class for the IndexProvider provider.
 
  See https://angular.io/guide/dependency-injection for more info on providers
  and Angular DI.
  */
-declare let ZegoClient: any;
 
 @Injectable()
 export class ConfigProvider {

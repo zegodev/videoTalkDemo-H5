@@ -5,7 +5,7 @@ import {ConfigProvider} from '../../providers/configProvider';
 import {SlidePipe} from "../../util/pipe/slidePipe";
 import {LogProvider} from "../../providers/logProvider";
 import {LogPage} from "../log/log";
-
+import {ZegoClient} from "choui-zego-rtc";
 
 
 /**
@@ -185,7 +185,7 @@ export class screenShareRoomPage {
 
     if (!window['extensionInstalled']) {
       this.alertCtrl.create({title:`
-        Please install the extension: 
+        Please install the extension:
         1. Go to chrome://extensions
         2. Check: "Enable Developer mode
         3. Click: "Load the unpacked extension...

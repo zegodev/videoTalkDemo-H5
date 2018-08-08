@@ -35,7 +35,9 @@ export class DeveloperPage implements OnInit {
         this.isLogin = settings['isLogin'];
         this.streamId = settings['publishStreamId'];
         this.pullstreamId = settings['pullstreamIds'];
-        this.signUrl = settings['signUrl'];
+        this.signUrl = settings['signUrl']||'wss://webrtctest.zego.im/ws?a=webrtc-demo';
+      }else{
+        this.signUrl = 'wss://webrtctest.zego.im/ws?a=webrtc-demo';
       }
     });
 

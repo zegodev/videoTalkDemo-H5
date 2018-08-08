@@ -1,10 +1,11 @@
 ///<reference path="../../../node_modules/ionic-angular/components/alert/alert-controller.d.ts"/>
 import {Component, ViewChild, ElementRef, ViewChildren, QueryList} from '@angular/core';
-import {AlertController, Content, FabButton, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController,   NavController, NavParams} from 'ionic-angular';
 import {ConfigProvider} from '../../providers/configProvider';
 import {SlidePipe} from "../../util/pipe/slidePipe";
 import {LogProvider} from "../../providers/logProvider";
 import {LogPage} from "../log/log";
+import {ZegoClient} from 'choui-zego-rtc';
 
 /**
  * Generated class for the DetailPage page.

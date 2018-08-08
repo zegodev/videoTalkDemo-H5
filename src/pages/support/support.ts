@@ -4,7 +4,6 @@ import {SettingtPage} from "../setting/setting";
 import {LogProvider} from "../../providers/logProvider";
 import {Storage} from '@ionic/storage';
 import {ConfigProvider} from "../../providers/configProvider";
-import {DevRoomPage} from "../devroom/room";
 import {SupportRoomPage} from "../supportRoom/room";
 
 @Component({

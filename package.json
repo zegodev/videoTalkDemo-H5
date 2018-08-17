@@ -8,7 +8,7 @@
   "scripts": {
     "clean": "ionic-app-scripts clean",
     "lint": "ionic-app-scripts lint",
-    "ionic:build": "ionic-app-scripts build   --prod --wwwDir  docs",
+    "ionic:build": "ionic-app-scripts build   --prod --wwwDir  dist",
     "build": "npm run ionic:build",
     "ionic:serve": "ionic-app-scripts serve -b",
     "https": "node https",
@@ -30,7 +30,6 @@
     "@ionic/storage": "^2.1.3",
     "angular2-markdown": "^2.2.3",
     "base-64": "^0.1.0",
-    "choui-zego-rtc": "0.0.9",
     "connect": "^3.6.6",
     "fs": "0.0.1-security",
     "http-proxy": "^1.17.0",
@@ -42,6 +41,7 @@
     "rxjs": "5.5.2",
     "script-runner": "^0.1.7",
     "sw-toolbox": "3.6.0",
+    "webrtc-zego": "^1.1.0",
     "zone.js": "0.8.18"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {AlertController, Navbar, NavController} from 'ionic-angular';
 import {ConfigProvider} from "../../providers/configProvider";
-import {ZegoClient} from "choui-zego-rtc";
+import {ZegoClient} from "webrtc-zego";
 
 @Component({
   selector: 'page-setting',

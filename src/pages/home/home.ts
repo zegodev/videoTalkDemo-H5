@@ -41,7 +41,7 @@ export class HomePage implements OnInit {
    * 跳转到直播间
    * ***/
   openRoom(test = 0) {
-
+    this.roomId = this.roomId.replace(/^\s+|\s+$/gm,'');
     if(!this.roomId){
       this.logger.info('iuput roomId is empty!');
       this.alertCtr.create({title: '请输入房间号'}).present();

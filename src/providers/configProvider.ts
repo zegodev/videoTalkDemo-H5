@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CommonUtil} from "../util/commonUtil";
-// import {ZegoClient} from "webrtc-zego";
+import {ZegoClient} from "webrtc-zego";
 /*
  Generated class for the IndexProvider provider.
 
@@ -13,7 +13,7 @@ import {CommonUtil} from "../util/commonUtil";
 @Injectable()
 export class ConfigProvider {
 
- zg:any;
+ 
 
   constructor(public http: HttpClient) {
     this.init();
@@ -21,7 +21,6 @@ export class ConfigProvider {
 
   init() {
     if (typeof ZegoClient !== 'undefined') {
-      this.zg = new ZegoClient();
       this.initEnumDevices();
     } else {
       setTimeout(() => {
@@ -210,7 +209,7 @@ export class ConfigProvider {
     this.audioInputList = [];
     this.videoInputList = [];
     let defaultIndex = 0;
-    this.zg.enumDevices(deviceInfo => {
+    ZegoClient.enumDevices(deviceInfo => {
       console.log('enumDevices' + JSON.stringify(deviceInfo));
       if (deviceInfo.microphones) {
         for (let i = 0; i < deviceInfo.microphones.length; i++) {

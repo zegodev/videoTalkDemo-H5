@@ -5,7 +5,7 @@ import {ConfigProvider} from '../../providers/configProvider';
 import {SlidePipe} from "../../util/pipe/slidePipe";
 import {LogProvider} from "../../providers/logProvider";
 import {LogPage} from "../log/log";
-// import {ZegoClient} from "webrtc-zego";
+import {ZegoClient} from "webrtc-zego";
 
 /**
  * Generated class for the DetailPage page.
@@ -115,7 +115,7 @@ export class DevRoomPage {
 
 
             result = this.zg.startPlayingStream(el.nativeElement.id, el.nativeElement);
-
+            
 
             if (!result) {
               this.alertCtrl.create({title: '哎呀，播放失败啦！'}).present();
@@ -182,7 +182,7 @@ export class DevRoomPage {
 
     this.logger.info(`#${this.publishStreamId}#get token start`);
 
-    this.status[this.publishStreamId] = 'logging';
+    this.status['push'+this.publishStreamId] = 'logging';
     this.status = {...this.status};
 
     this.config.getToken().subscribe(result => {
@@ -193,7 +193,7 @@ export class DevRoomPage {
       this.logger.info(`#${this.publishStreamId}#start login`);
       this.zg.login(this.roomId, 2, this.loginToken,streamList=>{
 
-        this.status[this.publishStreamId] = 'login';
+        this.status['push'+this.publishStreamId] = 'login';
 
         //测试页面相关，自定了拉流id
         if (this.pullstreamId.length>0) {
@@ -220,7 +220,7 @@ export class DevRoomPage {
 
         //状态
         this.useLocalStreamList.forEach(item => {
-          this.status[item.stream_id] = 'pulling'
+          this.status['pull'+item.stream_id] = 'pulling'
         });
         this.status = {...this.status};
 
@@ -269,10 +269,13 @@ export class DevRoomPage {
 
       this.logger.info(`#${this.publishStreamId}#preview success`);
 
-      this.status[this.publishStreamId] = 'previewed';
+      this.status['push'+this.publishStreamId] = 'previewed';
       this.status = {...this.status};
 
-      this.isPublish && this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
+      if(this.isPublish) {
+        const result = this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
+        this.status['push'+this.publishStreamId] = result?'publish suc':'publish fail';
+      }
 
       this.localVideo.nativeElement.muted = !this.config.muted;
 
@@ -455,14 +458,13 @@ export class DevRoomPage {
       onPlayStateUpdate: (type, streamid, error) => {
         if (type == 0) {
           this.logger.info(`#${streamid}# play  success`);
-          this.status[streamid] = 'play suc';
+          this.status['pull'+streamid] = 'play suc';
         }
         else if (type == 2) {
           this.logger.info(`#${streamid}# play retry`);
         } else {
           // trace("publish " + streamid + "error " + error.code);
-          this.status[streamid] = 'play';
-          this.status[streamid] = 'play err';
+          this.status['pull'+streamid] = 'play err';
           this.logger.errors(`#${streamid}# play error ${error.msg}`);
           let _msg = error.msg;
           if(error.msg.indexOf('server session closed, reason: ')>-1){
@@ -481,7 +483,7 @@ export class DevRoomPage {
       },
       onPublishStateUpdate: (type, streamid, error) => {
         if (type == 0) {
-          this.status[streamid] = 'publish suc';
+          this.status['push'+streamid] = 'publish suc';
           this.logger.info(`#${streamid}# publish  success`);
         } else if (type == 2) {
           this.logger.info(`#${streamid}# publish  retry`);
@@ -540,7 +542,7 @@ export class DevRoomPage {
           }
 
           this.addedVideo.forEach(item => {
-            this.status[item.stream_id] = 'pulling'
+            this.status['pull'+item.stream_id] = 'pulling'
           });
           this.status = {...this.status};
         } else if (type == ENUM_STREAM_UPDATE_TYPE.deleted) {

@@ -31,6 +31,33 @@
     <ion-input type="text"  [(ngModel)]="signUrl" ></ion-input>
   </ion-item>
 
+  <ion-item>
+    <ion-label>是否推流</ion-label>
+    <ion-toggle    [(ngModel)]="isPublish" checked="true"></ion-toggle>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label>是否推音频</ion-label>
+    <ion-toggle    [(ngModel)]="isPublishAudio" checked="true"></ion-toggle>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label>是否推视频</ion-label>
+    <ion-toggle    [(ngModel)]="isPublishVideo" checked="true"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>是否拉音频</ion-label>
+    <ion-toggle    [(ngModel)]="isPullAudio" checked="true"></ion-toggle>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label>是否拉视频</ion-label>
+    <ion-toggle    [(ngModel)]="isPullVideo" checked="true"></ion-toggle>
+  </ion-item>
 
 
 

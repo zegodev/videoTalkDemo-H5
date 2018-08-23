@@ -19,8 +19,14 @@ export class DeveloperPage implements OnInit {
   pullstreamId: string = '';
   signUrl: string = '';
   appId:number;
-
-
+  
+  
+  isPublishAudio = true;
+  isPublishVideo = true;
+  isPullAudio = true;
+  isPullVideo = true;
+  
+  
   constructor(public navCtrl: NavController, private logger: LogProvider,private config: ConfigProvider,
               private alertCtr: AlertController, private storage: Storage) {
     console.log('DeveloperPage start');
@@ -36,6 +42,12 @@ export class DeveloperPage implements OnInit {
         this.streamId = settings['publishStreamId'];
         this.pullstreamId = settings['pullstreamIds'];
         this.signUrl = settings['signUrl']||'wss://webrtctest.zego.im/ws?a=webrtc-demo';
+  
+        this.isPublishAudio = !!settings['isPublishAudio'];
+        this.isPublishVideo = !!settings['isPublishVideo'];
+        this.isPullAudio = !!settings['isPullAudio'];
+        this.isPullVideo = !!settings['isPullVideo'];
+        
       }else{
         this.signUrl = 'wss://webrtctest.zego.im/ws?a=webrtc-demo';
       }
@@ -54,7 +66,11 @@ export class DeveloperPage implements OnInit {
       isPublish: this.isPublish,
       isLogin:this.isLogin,
       signUrl: this.signUrl,
-      isTest: 1
+      isTest: 1,
+      isPublishAudio: this.isPublishAudio,
+      isPublishVideo: this.isPublishVideo,
+      isPullAudio: this.isPullAudio,
+      isPullVideo: this.isPullVideo
     };
   
     if (!this.roomId) {

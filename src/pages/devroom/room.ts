@@ -44,8 +44,12 @@ export class DevRoomPage {
   subVideoList: QueryList<ElementRef>;
 
   status = {};
-
-
+  
+  
+  isPublishAudio = true;
+  isPublishVideo = true;
+  isPullAudio = true;
+  isPullVideo = true;
   /****
    * 初始化
    * ***/
@@ -65,7 +69,12 @@ export class DevRoomPage {
     this.isPublish = this.navParams.get('isPublish') === false ? false : true;
     this.isLogin = this.navParams.get('isLogin') === false ? false : true;
     this.publishStreamId = this.navParams.get('publishStreamId') || ('s' + this.config.idName);
-
+  
+    this.isPublishAudio = this.navParams.get ('isPublishAudio');
+    this.isPublishVideo = this.navParams.get ('isPublishVideo');
+    this.isPullAudio = this.navParams.get ('isPullAudio');
+    this.isPullVideo = this.navParams.get ('isPullVideo');
+    
     if (!this.roomId) {
       this.logger.warning(`#${this.publishStreamId}#roomId is empty,force to go back`);
       this.logoutRoom();
@@ -112,17 +121,27 @@ export class DevRoomPage {
 
 
             el.nativeElement.muted = (this.offOnVolume === 'md-volume-off');
-
-
-            result = this.zg.startPlayingStream(el.nativeElement.id, el.nativeElement);
-            
-
-            if (!result) {
-              this.alertCtrl.create({title: '哎呀，播放失败啦！'}).present();
-              el.nativeElement.style = 'display:none';
-              console.error("play " + el.nativeElement.id + " return " + result);
-
+  
+  
+  
+            let playType = '';
+            playType = (this.isPullVideo && 'video')||playType;
+            playType = (this.isPullAudio && 'audio')||playType;
+            playType = (this.isPullVideo && this.isPullAudio && 'all') || playType;
+  
+            if (playType) {
+              result = this.zg.startPlayingStream (el.nativeElement.id, el.nativeElement, null, {playType: playType});
+    
+              if (!result) {
+                this.alertCtrl.create ({title: '哎呀，播放失败啦！'}).present ();
+                el.nativeElement.style = 'display:none';
+                console.error ("play " + el.nativeElement.id + " return " + result);
+      
+              }
+            } else {
+              this.logger.errors (`#${el.nativeElement.id}# do not pull`)
             }
+           
           }
           _count++;
         });
@@ -251,16 +270,16 @@ export class DevRoomPage {
   doPreviewPublish() {
 
     this.logger.info(`#${this.publishStreamId}#start Preview`);
-
-
+  
+  
     let _conf = {
-      audio: this.config.audio,
+      audio: this.config.audio && this.isPublishAudio,
       audioInput: this.config.audioInput,
-      video: this.config.video,
+      video: this.config.video && this.isPublishVideo,
       videoInput: this.config.videoInput,
       videoQuality: this.config.videoQuality,
       horizontal: this.config.horizontal
-    }
+    };
 
 
     this.logger.info(`#${this.publishStreamId}#  Preview  config ${JSON.stringify(_conf)}`);

@@ -5,9 +5,9 @@ import {AlertController, NavController} from 'ionic-angular';
 import {RoomPage} from "../room/room";
 import {SettingtPage} from  "../setting/setting";
 import {LogProvider} from "../../providers/logProvider";
-import {CommonUtil} from "../../util/commonUtil";
 import {Storage} from '@ionic/storage';
 import {screenShareRoomPage} from "../screeshare/screenshare";
+import {ZegoClient} from "webrtc-zego";
 
 @Component({
   selector: 'page-home',
@@ -26,14 +26,23 @@ export class HomePage implements OnInit {
    * ***/
   ngOnInit() {
 
-    if(!CommonUtil.isSupportWebRtc()){
+    if(ZegoClient.isSupportWebrtc()){
       this.isSupport = false;
       this.alertCtr.create({title: '哎呀，浏览器暂不支持体验webrtc哦！'}).present();
     }
-
+  
+    ZegoClient.isSupportH264(result=>{
+        if(!result){
+          this.isSupport = false;
+          this.alertCtr.create({title: '浏览器不支持H264编码，换一个浏览器试试吧'}).present();
+        }
+    },err=>{
+      this.logger.errors(err);
+    });
     this.storage.get('homepage_roomid').then(result=>{
       this.roomId = result;
     })
+    
   }
 
 

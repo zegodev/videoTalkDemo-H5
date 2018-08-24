@@ -43,10 +43,10 @@ export class DeveloperPage implements OnInit {
         this.pullstreamId = settings['pullstreamIds'];
         this.signUrl = settings['signUrl']||'wss://webrtctest.zego.im/ws?a=webrtc-demo';
   
-        this.isPublishAudio = !!settings['isPublishAudio'];
-        this.isPublishVideo = !!settings['isPublishVideo'];
-        this.isPullAudio = !!settings['isPullAudio'];
-        this.isPullVideo = !!settings['isPullVideo'];
+        this.isPublishAudio = typeof settings['isPublishAudio'] === 'undefined'?true:settings['isPublishAudio'];
+        this.isPublishVideo = typeof settings['isPublishVideo'] === 'undefined'?true:settings['isPublishVideo'];
+        this.isPullAudio = typeof settings['isPullAudio'] === 'undefined'?true:settings['isPullAudio'];
+        this.isPullVideo = typeof settings['isPullVideo'] === 'undefined'?true:settings['isPullVideo'];
         
       }else{
         this.signUrl = 'wss://webrtctest.zego.im/ws?a=webrtc-demo';

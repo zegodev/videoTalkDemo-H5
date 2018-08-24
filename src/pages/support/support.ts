@@ -43,10 +43,10 @@ export class SupportPage implements OnInit {
         this.streamId = settings['publishStreamId'];
         this.pullstreamId = settings['pullstreamIds'];
         this.signUrl = settings['signUrl'];
-        this.isPublishAudio = !!settings['isPublishAudio'];
-        this.isPublishVideo = !!settings['isPublishVideo'];
-        this.isPullAudio = !!settings['isPullAudio'];
-        this.isPullVideo = !!settings['isPullVideo'];
+        this.isPublishAudio = typeof settings['isPublishAudio'] === 'undefined'?true:settings['isPublishAudio'];
+        this.isPublishVideo = typeof settings['isPublishVideo'] === 'undefined'?true:settings['isPublishVideo'];
+        this.isPullAudio = typeof settings['isPullAudio'] === 'undefined'?true:settings['isPullAudio'];
+        this.isPullVideo = typeof settings['isPullVideo'] === 'undefined'?true:settings['isPullVideo'];
       }
     });
     

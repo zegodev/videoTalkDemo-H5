@@ -26,7 +26,7 @@ export class HomePage implements OnInit {
    * ***/
   ngOnInit() {
 
-    if(ZegoClient.isSupportWebrtc()){
+    if(!ZegoClient.isSupportWebrtc()){
       this.isSupport = false;
       this.alertCtr.create({title: '哎呀，浏览器暂不支持体验webrtc哦！'}).present();
     }
@@ -50,7 +50,8 @@ export class HomePage implements OnInit {
    * 跳转到直播间
    * ***/
   openRoom(test = 0) {
-    this.roomId = this.roomId.replace(/^\s+|\s+$/gm,'');
+    
+    this.roomId = this.roomId&&this.roomId.replace(/^\s+|\s+$/gm,'');
     if(!this.roomId){
       this.logger.info('iuput roomId is empty!');
       this.alertCtr.create({title: '请输入房间号'}).present();

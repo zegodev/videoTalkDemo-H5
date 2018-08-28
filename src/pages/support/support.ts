@@ -70,7 +70,7 @@ export class SupportPage implements OnInit {
       isPullAudio: this.isPullAudio,
       isPullVideo: this.isPullVideo
     };
-    
+    this.roomId = this.roomId&&this.roomId.replace(/^\s+|\s+$/gm,'');
     if (!this.roomId) {
       this.logger.info ('input roomId is empty!');
       this.alertCtr.create ({title: '请输入房间号'}).present ();

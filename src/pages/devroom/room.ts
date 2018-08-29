@@ -204,7 +204,7 @@ export class DevRoomPage {
     this.status['push'+this.publishStreamId] = 'logging';
     this.status = {...this.status};
 
-    this.config.getToken().subscribe(result => {
+    this.config.getToken('test').subscribe(result => {
 
       this.loginToken = result;
 

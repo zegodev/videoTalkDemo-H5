@@ -294,9 +294,6 @@ export class DevRoomPage {
 
       if(this.isPublish) {
         const result = this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
-        setTimeout(()=>{
-          this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
-        },2000);
         this.status['push'+this.publishStreamId] = result?'publish suc':'publish fail';
       }
 
@@ -512,7 +509,7 @@ export class DevRoomPage {
           this.logger.info(`#${streamid}# publish  retry`);
         } else {
           // trace("publish " + streamid + "error " + error.code);
-          this.status[streamid] = 'publish err';
+          this.status['push'+streamid] = 'publish err';
           this.logger.errors(`#${streamid}# publish error ${error.msg}`);
           let _msg = error.msg;
           if(error.msg.indexOf('server session closed, reason: ')>-1){

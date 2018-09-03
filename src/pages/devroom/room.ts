@@ -181,8 +181,9 @@ export class DevRoomPage {
         remoteLogLevel: 0
       }
       this.logger.info(`#${this.publishStreamId}#config param:${JSON.stringify(_config)}`);
-
+     
       this.zg.config(_config);
+      this.zg.setUserStateUpdate(true);
 
       //测试页面相关，自定义拉流
       this.signUrl && this.zg.setCustomSignalUrl(this.signUrl);
@@ -293,6 +294,9 @@ export class DevRoomPage {
 
       if(this.isPublish) {
         const result = this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
+        setTimeout(()=>{
+          this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
+        },2000);
         this.status['push'+this.publishStreamId] = result?'publish suc':'publish fail';
       }
 

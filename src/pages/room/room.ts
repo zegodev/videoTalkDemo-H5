@@ -149,7 +149,7 @@ export class RoomPage {
       this.logger.info(`#${this.publishStreamId}#config param:${JSON.stringify(_config)}`);
 
       this.zg.config(_config);
-
+      this.zg.setUserStateUpdate(true);
       this.login();
     }
   }

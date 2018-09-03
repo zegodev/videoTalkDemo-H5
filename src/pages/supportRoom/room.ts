@@ -174,7 +174,7 @@ export class SupportRoomPage {
       this.logger.info (`#${this.publishStreamId}#config param:${JSON.stringify (_config)}`);
       
       this.zg.config (_config);
-      
+      this.zg.setUserStateUpdate(true);
       //测试页面相关，自定义拉流
       // this.signUrl && this.zg.setCustomSignalUrl(this.signUrl);
       

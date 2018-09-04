@@ -5,6 +5,7 @@ import {LogProvider} from "../../providers/logProvider";
 import {Storage} from '@ionic/storage';
 import {ConfigProvider} from "../../providers/configProvider";
 import {DevRoomPage} from "../devroom/room";
+import {HistoryPage} from "../history/history";
 
 @Component({
   selector: 'page-developer',
@@ -18,6 +19,8 @@ export class DeveloperPage implements OnInit {
   streamId: string = '';
   pullstreamId: string = '';
   signUrl: string = '';
+  authTokenUrl:string = '';
+  appNode = '';
   appId:number;
   
   
@@ -42,7 +45,8 @@ export class DeveloperPage implements OnInit {
         this.streamId = settings['publishStreamId'];
         this.pullstreamId = settings['pullstreamIds'];
         this.signUrl = settings['signUrl']||'wss://webrtctest.zego.im/ws?a=webrtc-demo';
-  
+        this.authTokenUrl = settings['authTokenUrl']||'';
+        this.appNode =  settings['appNode']||'';
         this.isPublishAudio = typeof settings['isPublishAudio'] === 'undefined'?true:settings['isPublishAudio'];
         this.isPublishVideo = typeof settings['isPublishVideo'] === 'undefined'?true:settings['isPublishVideo'];
         this.isPullAudio = typeof settings['isPullAudio'] === 'undefined'?true:settings['isPullAudio'];
@@ -70,7 +74,9 @@ export class DeveloperPage implements OnInit {
       isPublishAudio: this.isPublishAudio,
       isPublishVideo: this.isPublishVideo,
       isPullAudio: this.isPullAudio,
-      isPullVideo: this.isPullVideo
+      isPullVideo: this.isPullVideo,
+      authTokenUrl:this.authTokenUrl,
+      appNode:this.appNode
     };
     this.roomId = this.roomId&&this.roomId.replace(/^\s+|\s+$/gm,'');
     if (!this.roomId) {
@@ -105,6 +111,12 @@ export class DeveloperPage implements OnInit {
    * ***/
   openSetting() {
     this.navCtrl.push(SettingtPage, {}, {
+      animate: true,
+    })
+  }
+  
+  openHistory() {
+    this.navCtrl.push(HistoryPage, {}, {
       animate: true,
     })
   }

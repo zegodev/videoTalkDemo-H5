@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      sdk版本更新明细
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+
+    <ng-container *ngFor="let item of items">
+      <ion-list-header>
+        {{item.version}}
+      </ion-list-header>
+      <ion-item *ngFor="let detail of item.details">{{detail}}</ion-item>
+    </ng-container>
+
+  </ion-list>
+
+</ion-content>

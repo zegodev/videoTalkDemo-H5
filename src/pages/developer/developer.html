@@ -5,7 +5,7 @@
         <ion-row>
           <ion-col col-4></ion-col>
           <ion-col col-4 style="text-align: center"><h4>VideoTalk</h4></ion-col>
-          <ion-col col-2><h6></h6></ion-col>
+          <ion-col col-2  (click)="openHistory()"><h6>版本更新详细</h6></ion-col>
           <ion-col col-2 (click)="openSetting()" class="setting" ><h6>设置</h6></ion-col>
         </ion-row>
       </ion-grid>
@@ -46,6 +46,16 @@
   <ion-item>
     <ion-label floating>请输入signUrl</ion-label>
     <ion-input type="text"  [(ngModel)]="signUrl" ></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>请输入鉴权token地址</ion-label>
+    <ion-input type="text"  [(ngModel)]="authTokenUrl" ></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>请输入鉴权节点</ion-label>
+    <ion-input type="text"  [(ngModel)]="appNode" ></ion-input>
   </ion-item>
 
   <ion-item>

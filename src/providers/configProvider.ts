@@ -36,6 +36,7 @@ export class ConfigProvider {
     nickName: '',
     server: '',
     loginTokenUrl: '',
+    loginAuthTokenUrl:'',
     logUrl: '',
     videoQuality: 2,
     logLevel: 0,
@@ -91,6 +92,15 @@ export class ConfigProvider {
 
   set loginTokenUrl(value: string) {
     value && (this.config.loginTokenUrl = value)
+  }
+  
+  
+  get loginAuthTokenUrl() {
+    return this.config.loginAuthTokenUrl;
+  }
+  
+  set loginAuthTokenUrl(value: string) {
+    value && (this.config.loginAuthTokenUrl = value)
   }
 
   get logUrl() {
@@ -199,6 +209,19 @@ export class ConfigProvider {
       },
       responseType: 'text'
     });
+  }
+  
+  
+  getAuthToken(app:string,stream:string,ispull:boolean){
+    return this.http.get(this.loginAuthTokenUrl, {
+      params: {
+        app,
+        stream,
+        public:ispull?'0':'1'
+      }
+    });
+  
+    
   }
 
   count = 0;

@@ -26,6 +26,7 @@ import {screenShareRoomPage} from "../pages/screeshare/screenshare";
 import {DevRoomPage} from "../pages/devroom/room";
 import {SupportPage} from "../pages/support/support";
 import {SupportRoomPage} from "../pages/supportRoom/room";
+import {HistoryPage} from "../pages/history/history";
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import {SupportRoomPage} from "../pages/supportRoom/room";
     screenShareRoomPage,
     SupportPage,
     SupportRoomPage,
+    HistoryPage,
     // TagSearchPage
   ],
   imports: [
@@ -66,6 +68,7 @@ import {SupportRoomPage} from "../pages/supportRoom/room";
     DeveloperPage,
     SupportPage,
     SupportRoomPage,
+    HistoryPage
     // TagSearchPage
   ],
   providers: [

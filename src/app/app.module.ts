@@ -20,7 +20,8 @@ import {pageArr } from "../pages";
 @NgModule({
   declarations: [
     MyApp,
-    ...pageArr
+    ...pageArr,
+    SlidePipe
   ],
   imports: [
     BrowserModule,
@@ -37,7 +38,7 @@ import {pageArr } from "../pages";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    ...pageArr
+    ...pageArr,
   ],
   providers: [
     StatusBar,

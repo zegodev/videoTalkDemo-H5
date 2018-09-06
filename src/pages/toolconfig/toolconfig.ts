@@ -19,7 +19,7 @@ export class ToolConfigPage implements OnInit {
   title: string = '';
   appKey: string = '';
   testenv: boolean = false;
-  businessType: string = '';
+  businessType: number;
   appId: number;
   
   
@@ -44,8 +44,8 @@ export class ToolConfigPage implements OnInit {
   openQRCode () {
     const value = {
       data: {
-        "appid": this.appId,
-        "businesstype": this.businessType,
+        "appid": this.appId*1,
+        "businesstype": this.businessType*1,
         "appkey": this.appKey,
         "testenv": this.testenv,
         "title": this.title

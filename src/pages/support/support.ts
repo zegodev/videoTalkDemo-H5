@@ -5,6 +5,8 @@ import {LogProvider} from "../../providers/logProvider";
 import {Storage} from '@ionic/storage';
 import {ConfigProvider} from "../../providers/configProvider";
 import {SupportRoomPage} from "../supportRoom/room";
+import {HistoryPage} from "../history/history";
+import {ToolConfigPage} from "../toolconfig/toolconfig";
 
 @Component ({
   selector: 'page-support',
@@ -103,5 +105,16 @@ export class SupportPage implements OnInit {
     })
   }
   
+  openHistory() {
+    this.navCtrl.push(HistoryPage, {}, {
+      animate: true,
+    })
+  }
+  
+  openToolConfig() {
+    this.navCtrl.push(ToolConfigPage, {}, {
+      animate: true,
+    })
+  }
   
 }

@@ -3,10 +3,10 @@
     <ion-title>
       <ion-grid>
         <ion-row>
-          <ion-col col-4></ion-col>
-          <ion-col col-4 style="text-align: center"><h4>VideoTalk</h4></ion-col>
-          <ion-col col-2><h6></h6></ion-col>
-          <ion-col col-2 (click)="openSetting()" class="setting" ><h6>设置</h6></ion-col>
+          <ion-col col-3 style="text-align: left"><h4>VideoTalk</h4></ion-col>
+          <ion-col col-3  (click)="openToolConfig()" item-left><h6>demo配置工具</h6></ion-col>
+          <ion-col col-3  (click)="openHistory()"><h6>版本更新详细</h6></ion-col>
+          <ion-col col-3 (click)="openSetting()" class="setting" ><h6>设置</h6></ion-col>
         </ion-row>
       </ion-grid>
     </ion-title>

@@ -1,0 +1,31 @@
+page-tool {
+
+  ion-toolbar ion-title {
+    padding: 0 10px 1px;
+    background-image: -webkit-gradient(linear, left top, right top, from(#1278f6), to(#00b4aa));
+    background-image: -webkit-linear-gradient(left, #1278f6, #00b4aa);
+    background-image: -moz-linear-gradient(left, #1278f6, #00b4aa);
+    background-image: linear-gradient(to right, #1278f6, #00b4aa);
+  }
+
+  .setting{
+    position: absolute;
+    left: 86%;
+    h6{
+      line-height: 1.6!important;
+    }
+  }
+
+   .roomId{
+    margin-top: 15%!important;
+  }
+
+  .chip-ios {
+    background: rgba(193, 185, 185, 0.12) !important;
+  }
+
+  .fab-ios-light {
+    background-color: #f4f4f4c7;
+  }
+
+}

@@ -9,6 +9,7 @@ import {HistoryPage} from "../history/history";
 import {QrCodeModal} from "../qrCodeModal";
 import {ClientUtil} from "webrtc-zego/sdk/common/client-util";
 import {CommonUtil} from "../../util/commonUtil";
+import {Modal} from "ionic-angular/components/modal/modal";
 
 @Component ({
   selector: 'page-tool',
@@ -21,7 +22,6 @@ export class ToolConfigPage implements OnInit {
   testenv: boolean = false;
   businessType: number;
   appId: number;
-  
   
   constructor (public navCtrl: NavController, private logger: LogProvider, private config: ConfigProvider,
                private alertCtr: AlertController, private storage: Storage, public modalCtrl: ModalController) {
@@ -44,8 +44,8 @@ export class ToolConfigPage implements OnInit {
   openQRCode () {
     const value = {
       data: {
-        "appid": this.appId*1,
-        "businesstype": this.businessType*1,
+        "appid": this.appId * 1,
+        "businesstype": this.businessType * 1,
         "appkey": this.appKey,
         "testenv": this.testenv,
         "title": this.title
@@ -53,16 +53,26 @@ export class ToolConfigPage implements OnInit {
       "type": "ac"
     };
     
-    this.storage.set('toolConfig',value.data).then(()=>{
+    this.storage.set ('toolConfig', value.data).then (() => {
       const param = CommonUtil.utf16to8 (JSON.stringify (value));
-      this.logger.info('toolconfig:'+param);
+      this.logger.info ('toolconfig:' + param);
       let profileModal = this.modalCtrl.create (QrCodeModal, {text: decodeURIComponent (param)}, {
         showBackdrop: true,
         enableBackdropDismiss: true
       });
       profileModal.present ();
     });
-  
+    
   }
+  
+  goback () {
+    if (this.navCtrl.canGoBack ()) {
+      this.navCtrl.pop ();
+    } else {
+      this.navCtrl.push (SupportRoomPage);
+    }
+    
+  }
+  
   
 }

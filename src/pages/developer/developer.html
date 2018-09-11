@@ -34,6 +34,17 @@
   </ion-item>
 
   <ion-item>
+    <ion-label>是否推音频</ion-label>
+    <ion-toggle    [(ngModel)]="isPublishAudio" checked="true"></ion-toggle>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label>是否推视频</ion-label>
+    <ion-toggle    [(ngModel)]="isPublishVideo" checked="true"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
     <ion-label floating>推流ID</ion-label>
     <ion-input type="text"  [(ngModel)]="streamId" ></ion-input>
   </ion-item>
@@ -58,16 +69,7 @@
     <ion-input type="text"  [(ngModel)]="appNode" ></ion-input>
   </ion-item>
 
-  <ion-item>
-    <ion-label>是否推音频</ion-label>
-    <ion-toggle    [(ngModel)]="isPublishAudio" checked="true"></ion-toggle>
-  </ion-item>
 
-
-  <ion-item>
-    <ion-label>是否推视频</ion-label>
-    <ion-toggle    [(ngModel)]="isPublishVideo" checked="true"></ion-toggle>
-  </ion-item>
 
   <ion-item>
     <ion-label>是否拉音频</ion-label>

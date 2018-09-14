@@ -176,7 +176,7 @@ export class DevRoomPage {
           const  result = this.zg.startPlayingStream (streamId, ele, null,
             {
               playType: playType,
-              streamParams:`expired=${rsp.expired}&nonce=${rsp.nonce}&token=${rsp.token}`
+              streamParams:`zg_expired=${rsp.zg_expired}&zg_nonce=${rsp.zg_nonce}&zg_token=${rsp.zg_token}`
             });
     
           if (!result) {
@@ -363,7 +363,7 @@ export class DevRoomPage {
         this.config.getAuthToken (this.appNode, this.publishStreamId, false).subscribe ((rsp:any) => {
       
           const result = this.zg.startPublishingStream (this.publishStreamId, this.localVideo.nativeElement,null,{
-            streamParams:`expired=${rsp.expired}&nonce=${rsp.nonce}&token=${rsp.token}`
+            streamParams:`zg_expired=${rsp.zg_expired}&zg_nonce=${rsp.zg_nonce}&zg_token=${rsp.zg_token}`
           });
           
           this.status['push' + this.publishStreamId] = result ? 'publish suc' : 'publish fail';

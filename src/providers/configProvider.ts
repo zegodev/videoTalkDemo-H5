@@ -217,7 +217,7 @@ export class ConfigProvider {
       params: {
         app,
         stream,
-        public:ispull?'0':'1'
+        publish:ispull?'0':'1'
       }
     });
   

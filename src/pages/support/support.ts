@@ -19,8 +19,10 @@ export class SupportPage implements OnInit {
   isLogin: boolean = false;
   streamId: string = '';
   pullstreamId: string = '';
-  signUrl: string = '';
+  server: string = '';
   appId: number;
+  signal = '';
+  token = '';
   
   isPublishAudio = true;
   isPublishVideo = true;
@@ -44,7 +46,9 @@ export class SupportPage implements OnInit {
         this.isLogin = settings['isLogin'];
         this.streamId = settings['publishStreamId'];
         this.pullstreamId = settings['pullstreamIds'];
-        this.signUrl = settings['signUrl'];
+        this.server = settings['server'];
+        this.signal = settings['signal'];
+        this.token = settings['token'];
         this.isPublishAudio = typeof settings['isPublishAudio'] === 'undefined'?true:settings['isPublishAudio'];
         this.isPublishVideo = typeof settings['isPublishVideo'] === 'undefined'?true:settings['isPublishVideo'];
         this.isPullAudio = typeof settings['isPullAudio'] === 'undefined'?true:settings['isPullAudio'];
@@ -64,7 +68,9 @@ export class SupportPage implements OnInit {
       pullstreamIds: this.pullstreamId,
       isPublish: this.isPublish,
       isLogin: this.isLogin,
-      signUrl: this.signUrl,
+      server: this.server,
+      signal: this.signal,
+      token: this.token,
       isTest: 1,
       appId: this.appId,
       isPublishAudio: this.isPublishAudio,
@@ -85,7 +91,9 @@ export class SupportPage implements OnInit {
     }
     
     this.config.appId = this.appId * 1;
-    this.config.server = this.signUrl;
+    this.config.server = this.server;
+    this.config.loginTokenUrl = this.token;
+    this.config.signalUrl = this.signal;
     
     this.storage.set ('support_setting', param).then (() => {
       //if(param.signUrl)param.roomId = 'zego-support' + param.roomId;

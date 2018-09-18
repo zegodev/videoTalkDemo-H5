@@ -176,7 +176,7 @@ export class SupportRoomPage {
       this.zg.config (_config);
       this.zg.setUserStateUpdate(true);
       //测试页面相关，自定义拉流
-      // this.signUrl && this.zg.setCustomSignalUrl(this.signUrl);
+       this.signUrl && this.zg.setCustomSignalUrl(this.signUrl);
       
       
       this.login ();

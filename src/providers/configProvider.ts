@@ -46,7 +46,17 @@ export class ConfigProvider {
     video: true,
     videoInput: null,
     horizontal: true,
-    muted: false
+    muted: false,
+    signalUrl:'',
+  };
+  
+  
+  get signalUrl() {
+    return this.config.signalUrl;
+  }
+  
+  set signalUrl(value: string) {
+    this.config.signalUrl = value;
   }
 
   get appId() {

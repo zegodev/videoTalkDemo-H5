@@ -204,18 +204,13 @@ export class ConfigProvider {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
 
-  getToken(support?:string) {
-    //xmlhttp.open("GET", loginTokenUrl + "?app_id=" + appid + "&id_name=" + idName, true);
-    let cgi_token = '';
-    if(support){
-      (cgi_token = CommonUtil.generateTokenInfo(this.appId));
-      this.loginTokenUrl = "https://wsliveroom-demo.zego.im:8282/token";
-    }
+  getToken() {
+    
+    
     return this.http.get(this.loginTokenUrl, {
       params: {
         app_id: this.appId + '',
-        id_name: this.idName,
-        cgi_token
+        id_name: this.idName
       },
       responseType: 'text'
     });

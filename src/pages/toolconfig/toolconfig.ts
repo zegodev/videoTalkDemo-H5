@@ -1,15 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertController, ModalController, NavController} from 'ionic-angular';
-import {SettingtPage} from "../setting/setting";
 import {LogProvider} from "../../providers/logProvider";
 import {Storage} from '@ionic/storage';
 import {ConfigProvider} from "../../providers/configProvider";
-import {SupportRoomPage} from "../supportRoom/room";
-import {HistoryPage} from "../history/history";
 import {QrCodeModal} from "../qrCodeModal";
-import {ClientUtil} from "webrtc-zego/sdk/common/client-util";
 import {CommonUtil} from "../../util/commonUtil";
-import {Modal} from "ionic-angular/components/modal/modal";
 
 @Component ({
   selector: 'page-tool',
@@ -69,7 +64,7 @@ export class ToolConfigPage implements OnInit {
     if (this.navCtrl.canGoBack ()) {
       this.navCtrl.pop ();
     } else {
-      this.navCtrl.push (SupportRoomPage);
+      //this.navCtrl.push (h);
     }
     
   }

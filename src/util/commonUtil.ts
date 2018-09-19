@@ -37,28 +37,7 @@ export class CommonUtil {
   static isSafari (): boolean {
     const ua = navigator.userAgent;
     return ua.indexOf ("Safari") != -1 && ua.indexOf ("Version") != -1;
-    ;
-  }
-  
-  static generateTokenInfo (appId: number): string {
-    let expireTime = (new Date ().getTime ()) / 1000 + 60 * 60;
-    expireTime = Number.parseInt (expireTime + '');
     
-    const serverSecret = "a053dc0e074cf8e283128c326d018179";
-    const nonce = md5 (Math.random () + '');
-    const checkToken = appId + serverSecret + nonce + expireTime;
-    const hash = md5 (checkToken);
-    
-    const tokenInfo = {
-      ver: 1,
-      hash: hash,
-      nonce: nonce,
-      expired: expireTime
-    };
-    
-    const token = Base64.encode (JSON.stringify (tokenInfo));
-    
-    return token;
   }
   
   static utf16to8 (str: string): string {
@@ -80,5 +59,4 @@ export class CommonUtil {
     }
     return out;
   }
-  
 }

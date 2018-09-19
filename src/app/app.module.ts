@@ -14,7 +14,6 @@ import {SlidePipe} from "../util/pipe/slidePipe";
 import {LogProvider} from "../providers/logProvider";
 import {DeveloperPage} from "../pages/developer/developer";
 import { IonicStorageModule } from '@ionic/storage';
-import {SupportPage} from "../pages/support/support";
 import {pageArr } from "../pages";
 
 @NgModule({
@@ -29,9 +28,8 @@ import {pageArr } from "../pages";
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp, {},{
       links: [
-        {component: DeveloperPage, name: 'developer', segment: 'test'},
-        {component: SupportPage, name: 'support', segment: 'support'}
-      ]
+        {component: DeveloperPage, name: 'developer', segment: 'test'}
+        ]
     })
     // MarkdownModule
   ],

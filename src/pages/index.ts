@@ -1,11 +1,9 @@
 import {HomePage} from "./home/home";
 import {DevRoomPage} from "./devroom/room";
-import {SupportPage} from "./support/support";
 import {LogPage} from "./log/log";
 import {RoomPage} from "./room/room";
 import {screenShareRoomPage} from "./screeshare/screenshare";
 import {SettingtPage} from "./setting/setting";
-import {SupportRoomPage} from "./supportRoom/room";
 import {HistoryPage} from "./history/history";
 import {DeveloperPage} from "./developer/developer";
 import {QrCodeModal} from "./qrCodeModal";
@@ -19,8 +17,6 @@ export const pageArr = [
   LogPage,
   DeveloperPage,
   screenShareRoomPage,
-  SupportPage,
-  SupportRoomPage,
   HistoryPage,
   ToolConfigPage,
   QrCodeModal
@@ -35,7 +31,5 @@ export const pageObj = {
   LogPage,
   screenShareRoomPage,
   DeveloperPage,
-  SupportPage,
-  SupportRoomPage,
   HistoryPage
 }

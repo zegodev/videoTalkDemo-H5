@@ -5,6 +5,7 @@ import {Storage} from '@ionic/storage';
 import {ConfigProvider} from "../../providers/configProvider";
 import {QrCodeModal} from "../qrCodeModal";
 import {CommonUtil} from "../../util/commonUtil";
+import {HomePage} from "../home/home";
 
 @Component ({
   selector: 'page-tool',
@@ -64,7 +65,7 @@ export class ToolConfigPage implements OnInit {
     if (this.navCtrl.canGoBack ()) {
       this.navCtrl.pop ();
     } else {
-      //this.navCtrl.push (h);
+      this.navCtrl.push (HomePage);
     }
     
   }

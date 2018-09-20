@@ -16,6 +16,9 @@ import {DeveloperPage} from "../pages/developer/developer";
 import { IonicStorageModule } from '@ionic/storage';
 import {pageArr } from "../pages";
 
+import {ToolConfigPage} from "../pages/toolconfig/toolconfig";
+import {HistoryPage} from "../pages/history/history";
+
 @NgModule({
   declarations: [
     MyApp,
@@ -28,7 +31,9 @@ import {pageArr } from "../pages";
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp, {},{
       links: [
-        {component: DeveloperPage, name: 'developer', segment: 'test'}
+        {component: DeveloperPage, name: 'developer', segment: 'test'},
+        {component: ToolConfigPage, name: 'config', segment: 'config'},
+        {component: HistoryPage, name: 'sdk', segment: 'sdk'}
         ]
     })
     // MarkdownModule

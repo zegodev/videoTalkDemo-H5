@@ -366,11 +366,11 @@ export class DevRoomPage {
             streamParams:`zg_expired=${rsp.zg_expired}&zg_nonce=${rsp.zg_nonce}&zg_token=${rsp.zg_token}`
           });
           
-          this.status['push' + this.publishStreamId] = result ? 'publish suc' : 'publish fail';
+          this.status['push' + this.publishStreamId] = result ? 'publishing' : 'publish fail';
         });
     }else if(this.isPublish){
       const result = this.zg.startPublishingStream (this.publishStreamId, this.localVideo.nativeElement);
-      this.status['push' + this.publishStreamId] = result ? 'publish suc' : 'publish fail';
+      this.status['push' + this.publishStreamId] = result ? 'publishing' : 'publish fail';
     }
   }
   

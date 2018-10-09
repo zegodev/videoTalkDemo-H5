@@ -19,10 +19,14 @@
       <ion-input type="text" [(ngModel)]="nickName"></ion-input>
     </ion-item>
 
-    <!--<ion-item>-->
-      <!--<ion-label>应用Id</ion-label>-->
-      <!--<ion-input type="text" [value]="appId" readonly></ion-input>-->
-    <!--</ion-item>-->
+    <ion-item >
+      <ion-label>应用版本</ion-label>
+      <ion-select [(ngModel)]="appId" multiple="false" cancelText="取消" okText="确定">
+        <ion-option value="1082937486"  selected="true">国内版</ion-option>
+        <ion-option value="3873208266">国际版</ion-option>
+      </ion-select>
+    </ion-item>
+
 
     <ion-item>
       <ion-label>日志级别</ion-label>

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CommonUtil} from "../util/commonUtil";
 import {ZegoClient} from "webrtc-zego";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 /*
  Generated class for the IndexProvider provider.
 
@@ -12,8 +13,8 @@ import {ZegoClient} from "webrtc-zego";
 
 @Injectable()
 export class ConfigProvider {
-
- 
+  
+  sub = new BehaviorSubject(1082937486);
 
   constructor(public http: HttpClient) {
     this.init();
@@ -31,7 +32,7 @@ export class ConfigProvider {
 
 
   config = {
-    appId: 229059616,
+    appId: 1082937486,
     idName: '',
     nickName: '',
     server: '',

@@ -1,6 +1,6 @@
 ///<reference path="../../util/commonUtil.ts"/>
 ///<reference path="../../../node_modules/ionic-angular/components/alert/alert-controller.d.ts"/>
-import {Component,  OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AlertController, NavController} from 'ionic-angular';
 import {RoomPage} from "../room/room";
 import {SettingtPage} from  "../setting/setting";
@@ -8,17 +8,25 @@ import {LogProvider} from "../../providers/logProvider";
 import {Storage} from '@ionic/storage';
 import {screenShareRoomPage} from "../screeshare/screenshare";
 import {ZegoClient} from "webrtc-zego";
+import {ConfigProvider} from "../../providers/configProvider";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit,OnDestroy {
 
   isSupport = true;
   roomId = '';
-  constructor(public navCtrl: NavController,private logger:LogProvider,
+  appId:number;
+  subscription:Subscription;
+  
+  constructor(public navCtrl: NavController,private logger:LogProvider, private config: ConfigProvider,
               private storage:Storage,public alertCtr: AlertController) {
+    this.subscription = this.config.sub.subscribe(appid=>{
+      this.appId = appid;
+    })
   }
 
   /****
@@ -91,6 +99,9 @@ export class HomePage implements OnInit {
       animate: true,
     })
   }
-
+  
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
+  }
 
 }

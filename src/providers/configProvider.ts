@@ -65,7 +65,10 @@ export class ConfigProvider {
   }
 
   set appId(value: number) {
-    value && (this.config.appId = value);
+    if(value) {
+      this.config.appId = value;
+      this.sub.next(value);
+    }
   }
 
   get idName() {

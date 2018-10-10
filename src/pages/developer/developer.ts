@@ -6,6 +6,7 @@ import {Storage} from '@ionic/storage';
 import {ConfigProvider} from "../../providers/configProvider";
 import {DevRoomPage} from "../devroom/room";
 import {HistoryPage} from "../history/history";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'page-developer',
@@ -22,7 +23,7 @@ export class DeveloperPage implements OnInit {
   authTokenUrl:string = '';
   appNode = '';
   appId:number;
-  
+  subscription:Subscription;
   
   isPublishAudio = true;
   isPublishVideo = true;
@@ -32,8 +33,9 @@ export class DeveloperPage implements OnInit {
   
   constructor(public navCtrl: NavController, private logger: LogProvider,private config: ConfigProvider,
               private alertCtr: AlertController, private storage: Storage) {
-    console.log('DeveloperPage start');
-    this.appId = this.config.appId;
+    this.subscription = this.config.sub.subscribe(appid=>{
+      this.appId = appid;
+    })
   }
 
   ngOnInit() {

@@ -14,7 +14,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 @Injectable()
 export class ConfigProvider {
   
-  sub = new BehaviorSubject(1082937486);
+  sub = new BehaviorSubject(229059616);
 
   constructor(public http: HttpClient) {
     this.init();
@@ -32,7 +32,7 @@ export class ConfigProvider {
 
 
   config = {
-    appId: 1082937486,
+    appId: 229059616,
     idName: '',
     nickName: '',
     server: '',

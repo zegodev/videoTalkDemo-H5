@@ -111,7 +111,7 @@ export class SettingtPage {
    * **/
   sure() {
     this.config.idName = this.idName;
-    this.config.appId = this.appId;
+    this.config.appId = this.appId*1;
     this.config.nickName = this.nickName;
     this.config.logLevel = this.logLevel;
     this.config.logUrl = this.logUrl;

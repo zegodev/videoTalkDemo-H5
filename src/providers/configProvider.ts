@@ -9,12 +9,15 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
  See https://angular.io/guide/dependency-injection for more info on providers
  and Angular DI.
  */
- 
+
+
+const DEFAULT_APPID  = 1082937486;
+
 
 @Injectable()
 export class ConfigProvider {
   
-  sub = new BehaviorSubject(229059616);
+  sub = new BehaviorSubject(DEFAULT_APPID);
 
   constructor(public http: HttpClient) {
     this.init();
@@ -32,7 +35,7 @@ export class ConfigProvider {
 
 
   config = {
-    appId: 229059616,
+    appId: DEFAULT_APPID,
     idName: '',
     nickName: '',
     server: '',
@@ -61,7 +64,7 @@ export class ConfigProvider {
   }
 
   get appId() {
-    return this.config.appId || 229059616;
+    return this.config.appId || DEFAULT_APPID;//229059616;
   }
 
   set appId(value: number) {
@@ -93,7 +96,12 @@ export class ConfigProvider {
 
 
   get server() {
-    return this.config.server || ('wss://wsliveroom' + this.appId + '-api.zego.im:8282/ws');
+    if(this.appId == 1082937486){
+      return this.config.loginTokenUrl || ('wss://wsliveroom' + this.appId + '-api.zego.im:8282/ws');
+    }else{
+      return this.config.loginTokenUrl || ('wss://wsliveroom' + this.appId + '-api.zegocloud.com:8282/ws');
+    }
+    // return this.config.server || ('wss://wsliveroom' + this.appId + '-api.zego.im:8282/ws');
   }
 
   set server(value: string) {
@@ -101,7 +109,12 @@ export class ConfigProvider {
   }
 
   get loginTokenUrl() {
-    return this.config.loginTokenUrl || ('https://wsliveroom' + this.appId + '-api.zego.im:8282/token');
+    if(this.appId == 1082937486){
+      return this.config.loginTokenUrl || ('https://wsliveroom' + this.appId + '-api.zego.im:8282/token');
+    }else{
+      return this.config.loginTokenUrl || ('https://wsliveroom' + this.appId + '-api.zegocloud.com:8282/token');
+    }
+    
   }
 
   set loginTokenUrl(value: string) {

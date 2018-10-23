@@ -46,10 +46,10 @@
 
 
         <ion-col col-sm-4 *ngFor="let item of useLocalStreamList; trackBy:identify;index as i">
-          <ion-chip *ngIf="i<3">
+          <ion-chip>
             <ion-label color="secondary">{{item.stream_id}}({{status['pull'+item.stream_id]}})</ion-label>
           </ion-chip>
-          <video *ngIf="i<3" #subVideo autoplay playsinline     data-id={{item.stream_id}}>
+          <video #subVideo autoplay playsinline     data-id={{item.stream_id}}>
             您的浏览器不支持 video 标签。
           </video>
         </ion-col>

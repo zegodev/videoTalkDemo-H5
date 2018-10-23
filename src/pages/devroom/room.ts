@@ -142,7 +142,7 @@ export class DevRoomPage {
             playType = (this.isPullVideo && this.isPullAudio && 'all') || playType;
             
             if (playType) {
-              this.playStream(el.nativeElement.id,el.nativeElement,playType);
+              this.playStream (el.nativeElement.id, el.nativeElement, playType);
             } else {
               this.logger.errors (`#${el.nativeElement.id}# do not pull`)
             }
@@ -168,37 +168,37 @@ export class DevRoomPage {
     });
   }
   
-  playStream(streamId:string,ele:any,playType:'all'|'video'|'audio'){
-      if(this.authTokenUrl&&this.appNode){
-  
-        this.config.loginAuthTokenUrl = this.authTokenUrl;
-        this.config.getAuthToken (this.appNode, streamId, true).subscribe ((rsp:any) => {
-          const  result = this.zg.startPlayingStream (streamId, ele, null,
-            {
-              playType: playType,
-              streamParams:`zg_expired=${rsp.zg_expired}&zg_nonce=${rsp.zg_nonce}&zg_token=${rsp.zg_token}`
-            });
-    
-          if (!result) {
-            this.alertCtrl.create ({title: '哎呀，播放失败啦！'}).present ();
-            ele.style = 'display:none';
-            console.error ("play " + ele.id + " return " + result);
-          }
-        });
+  playStream (streamId: string, ele: any, playType: 'all' | 'video' | 'audio') {
+    if (this.authTokenUrl && this.appNode) {
       
-      }else{
-        const  result = this.zg.startPlayingStream (streamId, ele, null,
+      this.config.loginAuthTokenUrl = this.authTokenUrl;
+      this.config.getAuthToken (this.appNode, streamId, true).subscribe ((rsp: any) => {
+        const result = this.zg.startPlayingStream (streamId, ele, null,
           {
-            playType: playType
+            playType: playType,
+            streamParams: `zg_expired=${rsp.zg_expired}&zg_nonce=${rsp.zg_nonce}&zg_token=${rsp.zg_token}`
           });
-  
+        
         if (!result) {
           this.alertCtrl.create ({title: '哎呀，播放失败啦！'}).present ();
           ele.style = 'display:none';
           console.error ("play " + ele.id + " return " + result);
         }
-      }
+      });
       
+    } else {
+      const result = this.zg.startPlayingStream (streamId, ele, null,
+        {
+          playType: playType
+        });
+      
+      if (!result) {
+        this.alertCtrl.create ({title: '哎呀，播放失败啦！'}).present ();
+        ele.style = 'display:none';
+        console.error ("play " + ele.id + " return " + result);
+      }
+    }
+    
   }
   
   
@@ -260,12 +260,12 @@ export class DevRoomPage {
         }
         
         //限制房间最多人数
-        if (streamList.length >= 4) {
-          this.alertCtrl.create ({title: '房间太拥挤，换一个吧！'}).present ();
-          this.logoutRoom ();
-          //window.location.reload();
-          return;
-        }
+        // if (streamList.length >= 4) {
+        //   this.alertCtrl.create ({title: '房间太拥挤，换一个吧！'}).present ();
+        //   this.logoutRoom ();
+        //   //window.location.reload();
+        //   return;
+        // }
         
         this.logger.info (`#${this.publishStreamId}#login success`);
         
@@ -328,8 +328,8 @@ export class DevRoomPage {
       this.status['push' + this.publishStreamId] = 'previewed';
       this.status = {...this.status};
       
-     
-      this.publishStream();
+      
+      this.publishStream ();
       
       this.localVideo.nativeElement.muted = !this.config.muted;
       
@@ -357,18 +357,18 @@ export class DevRoomPage {
   }
   
   
-  publishStream(){
-    if(this.authTokenUrl&&this.appNode&&this.isPublish){
-        this.config.loginAuthTokenUrl = this.authTokenUrl;
-        this.config.getAuthToken (this.appNode, this.publishStreamId, false).subscribe ((rsp:any) => {
-      
-          const result = this.zg.startPublishingStream (this.publishStreamId, this.localVideo.nativeElement,null,{
-            streamParams:`zg_expired=${rsp.zg_expired}&zg_nonce=${rsp.zg_nonce}&zg_token=${rsp.zg_token}`
-          });
-          
-          this.status['push' + this.publishStreamId] = result ? 'publishing' : 'publish fail';
+  publishStream () {
+    if (this.authTokenUrl && this.appNode && this.isPublish) {
+      this.config.loginAuthTokenUrl = this.authTokenUrl;
+      this.config.getAuthToken (this.appNode, this.publishStreamId, false).subscribe ((rsp: any) => {
+        
+        const result = this.zg.startPublishingStream (this.publishStreamId, this.localVideo.nativeElement, null, {
+          streamParams: `zg_expired=${rsp.zg_expired}&zg_nonce=${rsp.zg_nonce}&zg_token=${rsp.zg_token}`
         });
-    }else if(this.isPublish){
+        
+        this.status['push' + this.publishStreamId] = result ? 'publishing' : 'publish fail';
+      });
+    } else if (this.isPublish) {
       const result = this.zg.startPublishingStream (this.publishStreamId, this.localVideo.nativeElement);
       this.status['push' + this.publishStreamId] = result ? 'publishing' : 'publish fail';
     }
@@ -461,8 +461,8 @@ export class DevRoomPage {
     this.zg.startPreview (this.localVideo.nativeElement, _config, () => {
       
       this.logger.info (`#${this.publishStreamId}#preview success`);
-  
-      this.publishStream();
+      
+      this.publishStream ();
       
       this.localVideo.nativeElement.muted = !this.config.muted;
       
@@ -539,7 +539,7 @@ export class DevRoomPage {
           this.status['pull' + streamid] = 'play err';
           this.logger.errors (`#${streamid}# play error ${error.msg}`);
           let _msg = error.msg;
-          if (error.msg&&error.msg.indexOf ('server session closed, reason: ') > -1) {
+          if (error.msg && error.msg.indexOf ('server session closed, reason: ') > -1) {
             let code = error.msg.replace ('server session closed, reason: ', '');
             if (code == 21) {
               _msg = '音频编解码不支持(opus)';
@@ -564,7 +564,7 @@ export class DevRoomPage {
           this.status['push' + streamid] = 'publish err';
           this.logger.errors (`#${streamid}# publish error ${error.msg}`);
           let _msg = error.msg;
-          if (error.msg&&error.msg.indexOf ('server session closed, reason: ') > -1) {
+          if (error.msg && error.msg.indexOf ('server session closed, reason: ') > -1) {
             let code = error.msg.replace ('server session closed, reason: ', '');
             if (code == 21) {
               _msg = '音频编解码不支持(opus)';

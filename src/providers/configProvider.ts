@@ -11,7 +11,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
  */
 
 
-const DEFAULT_APPID  = 1082937486;
+const DEFAULT_APPID  = 229059616;
 
 
 @Injectable()
@@ -96,10 +96,11 @@ export class ConfigProvider {
 
 
   get server() {
-    if(this.appId == 1082937486){
-      return this.config.loginTokenUrl || ('wss://wsliveroom' + this.appId + '-api.zego.im:8282/ws');
-    }else{
+    if(this.appId == 3873208266){
       return this.config.loginTokenUrl || ('wss://wsliveroom' + this.appId + '-api.zegocloud.com:8282/ws');
+    }else{
+      return this.config.loginTokenUrl || ('wss://wsliveroom' + this.appId + '-api.zego.im:8282/ws');
+     
     }
     // return this.config.server || ('wss://wsliveroom' + this.appId + '-api.zego.im:8282/ws');
   }
@@ -109,10 +110,10 @@ export class ConfigProvider {
   }
 
   get loginTokenUrl() {
-    if(this.appId == 1082937486){
-      return this.config.loginTokenUrl || ('https://wsliveroom' + this.appId + '-api.zego.im:8282/token');
-    }else{
+    if(this.appId == 3873208266){
       return this.config.loginTokenUrl || ('https://wsliveroom' + this.appId + '-api.zegocloud.com:8282/token');
+    }else{
+      return this.config.loginTokenUrl || ('https://wsliveroom' + this.appId + '-api.zego.im:8282/token');
     }
     
   }

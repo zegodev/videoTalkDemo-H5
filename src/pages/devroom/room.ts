@@ -5,8 +5,8 @@ import {ConfigProvider} from '../../providers/configProvider';
 import {SlidePipe} from "../../util/pipe/slidePipe";
 import {LogProvider} from "../../providers/logProvider";
 import {LogPage} from "../log/log";
-import {ZegoClient} from "webrtc-zego";
-import {StreamInfo} from "webrtc-zego/sdk/common/zego.entity";
+// import {ZegoClient} from "webrtc-zego";
+// import {StreamInfo} from "webrtc-zego/sdk/common/zego.entity";
 
 /**
  * Generated class for the DetailPage page.
@@ -26,14 +26,14 @@ export class DevRoomPage {
   
   
   roomId: string;
-  zg: ZegoClient;
+  zg: any;
   loginToken: string;
   loginRoom: boolean;
   useLocalStreamList: Array<any> = [];
   publishStreamId: string;
   isTest: number;
   signUrl: string;
-  pullstreamId: StreamInfo[] = [];
+  pullstreamId: any[] = [];
   
   isSuportMultipCam = false;
   isPublish = true;

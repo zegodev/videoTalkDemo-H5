@@ -5,7 +5,7 @@ import {ConfigProvider} from '../../providers/configProvider';
 import {SlidePipe} from "../../util/pipe/slidePipe";
 import {LogProvider} from "../../providers/logProvider";
 import {LogPage} from "../log/log";
-import {ZegoClient} from 'webrtc-zego';
+// import {ZegoClient} from 'webrtc-zego';
 
 /**
  * Generated class for the DetailPage page.

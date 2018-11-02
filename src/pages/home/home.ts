@@ -7,7 +7,7 @@ import {SettingtPage} from  "../setting/setting";
 import {LogProvider} from "../../providers/logProvider";
 import {Storage} from '@ionic/storage';
 import {screenShareRoomPage} from "../screeshare/screenshare";
-// import {ZegoClient} from "webrtc-zego";
+import {ZegoClient} from "webrtc-zego";
 import {ConfigProvider} from "../../providers/configProvider";
 import {Subscription} from "rxjs/Subscription";
 

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CommonUtil} from "../util/commonUtil";
-// import {ZegoClient} from "webrtc-zego";
+ import {ZegoClient} from "webrtc-zego";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 /*
  Generated class for the IndexProvider provider.

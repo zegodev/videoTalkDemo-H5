@@ -59,4 +59,13 @@ export class CommonUtil {
     }
     return out;
   }
+  
+  static msgTranse(_msg){
+    switch (_msg){
+      case 'dispatch request error':
+        return '该流已断开退出';
+      case 'login token error':
+        return '网络没有响应，请切换网络重试';
+    }
+  }
 }

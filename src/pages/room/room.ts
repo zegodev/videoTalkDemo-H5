@@ -6,6 +6,7 @@ import {SlidePipe} from "../../util/pipe/slidePipe";
 import {LogProvider} from "../../providers/logProvider";
 import {LogPage} from "../log/log";
 import {ZegoClient} from 'webrtc-zego';
+import {CommonUtil} from "../../util/commonUtil";
 
 /**
  * Generated class for the DetailPage page.
@@ -39,8 +40,9 @@ export class RoomPage {
   localVideo: ElementRef;
   @ViewChildren('subVideo')
   subVideoList: QueryList<ElementRef>;
-
-
+  
+  
+  status = {};
   /****
    * 初始化
    * ***/
@@ -162,7 +164,9 @@ export class RoomPage {
   login() {
 
     this.logger.info(`#${this.publishStreamId}#get token start`);
-
+    
+    this.status['push' + this.publishStreamId] = 'logging';
+    this.status = {...this.status};
 
     this.config.getToken().subscribe(result => {
 
@@ -171,9 +175,9 @@ export class RoomPage {
       this.logger.info(`#${this.publishStreamId}#get token success:${result}`);
       this.logger.info(`#${this.publishStreamId}#start login`);
       this.zg.login(this.roomId, 2, this.loginToken, streamList => {
-
-
-
+  
+  
+        this.status['push' + this.publishStreamId] = 'login suc';
 
         //限制房间最多人数
         if (streamList.length >= 4) {
@@ -192,7 +196,13 @@ export class RoomPage {
 
         this.useLocalStreamList = [...this.useLocalStreamList, ...streamList];
         this.addedVideo = [...this.useLocalStreamList];
-
+  
+        //状态
+        this.useLocalStreamList.forEach (item => {
+          this.status['pull' + item.stream_id] = 'pulling'
+        });
+        this.status = {...this.status};
+        
 
         //开始预览本地视频
         this.doPreviewPublish();
@@ -230,12 +240,16 @@ export class RoomPage {
     this.logger.info(`#${this.publishStreamId}#  Preview  config ${JSON.stringify(_conf)}`);
 
     this.zg.startPreview(this.localVideo.nativeElement, _conf, () => {
+  
+      this.status['push' + this.publishStreamId] = 'previewed';
+      this.status = {...this.status};
 
       this.logger.info(`#${this.publishStreamId}#preview success`);
 
 
-      this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
-
+      let result = this.zg.startPublishingStream(this.publishStreamId, this.localVideo.nativeElement);
+      this.status['push' + this.publishStreamId] = result ? 'publishing' : 'publish fail';
+      
       this.localVideo.nativeElement.muted = !this.config.muted;
 
       let _index = 0;
@@ -379,13 +393,14 @@ export class RoomPage {
     let _config = {
       onPlayStateUpdate: (type, streamid, error) => {
         if (type == 0) {
+          this.status['pull' + streamid] = 'play suc';
           this.logger.info(`#${streamid}# play  success`);
         }
         else if (type == 2) {
           this.logger.info(`#${streamid}# play retry`);
         } else {
           // trace("publish " + streamid + "error " + error.code);
-
+          this.status['pull' + streamid] = 'play err';
           this.logger.errors(`#${streamid}# play error ${error.msg}`);
           let _msg = error.msg;
           if (error.msg.indexOf('server session closed, reason: ') > -1) {
@@ -398,19 +413,20 @@ export class RoomPage {
               _msg = 'sdp 解释错误';
             }
           }
-          this.alertCtrl.create({title: `拉流${streamid}失败，${_msg}`}).present();
+          this.alertCtrl.create({title: `拉流${streamid}失败，${CommonUtil.msgTranse(_msg)}`}).present();
         }
+        this.status = {...this.status};
 
       },
       onPublishStateUpdate: (type, streamid, error) => {
         if (type == 0) {
-
+          this.status['push' + streamid] = 'publish suc';
           this.logger.info(`#${streamid}# publish  success`);
         } else if (type == 2) {
           this.logger.info(`#${streamid}# publish  retry`);
         } else {
           // trace("publish " + streamid + "error " + error.code);
-
+          this.status['push' + streamid] = 'publish err';
           this.logger.errors(`#${streamid}# publish error ${error.msg}`);
           let _msg = error.msg;
           if (error.msg.indexOf('server session closed, reason: ') > -1) {
@@ -423,8 +439,10 @@ export class RoomPage {
               _msg = 'sdp 解释错误';
             }
           }
-          this.alertCtrl.create({title: `推流${streamid}失败，${_msg}`}).present();
+          
+          this.alertCtrl.create({title: `推流${streamid}失败，${CommonUtil.msgTranse(_msg)}`}).present();
         }
+        this.status = {...this.status};
 
       },
       onPublishQualityUpdate: (streamid, quality) => {
@@ -461,6 +479,11 @@ export class RoomPage {
             this.useLocalStreamList.push(streamList[i]);
             this.addedVideo.push(streamList[i]);
           }
+  
+          this.addedVideo.forEach (item => {
+            this.status['pull' + item.stream_id] = 'pulling'
+          });
+          this.status = {...this.status};
 
         } else if (type == ENUM_STREAM_UPDATE_TYPE.deleted) {
           for (var k = 0; k < this.useLocalStreamList.length; k++) {
@@ -556,5 +579,7 @@ export class RoomPage {
   identify(index: number, item: { stream_id: string }) {
     return item.stream_id;
   }
+  
+ 
 
 }

@@ -7,6 +7,7 @@ import {LogProvider} from "../../providers/logProvider";
 import {LogPage} from "../log/log";
 import {ZegoClient} from "webrtc-zego";
 import {StreamInfo} from "webrtc-zego/sdk/common/zego.entity";
+import {CommonUtil} from "../../util/commonUtil";
 
 /**
  * Generated class for the DetailPage page.
@@ -549,7 +550,7 @@ export class DevRoomPage {
               _msg = 'sdp 解释错误';
             }
           }
-          this.alertCtrl.create ({title: `拉流${streamid}失败，${_msg}`}).present ();
+          this.alertCtrl.create({title: `拉流${streamid}失败，${CommonUtil.msgTranse(_msg)}`}).present();
         }
         this.status = {...this.status};
       },
@@ -574,7 +575,8 @@ export class DevRoomPage {
               _msg = 'sdp 解释错误';
             }
           }
-          this.alertCtrl.create ({title: `推流${streamid}失败，${_msg}`}).present ();
+          
+          this.alertCtrl.create({title: `推流${streamid}失败，${CommonUtil.msgTranse(_msg)}`}).present();
         }
         this.status = {...this.status};
       },

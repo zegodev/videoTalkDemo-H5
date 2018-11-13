@@ -413,7 +413,7 @@ export class RoomPage {
               _msg = 'sdp 解释错误';
             }
           }
-          this.alertCtrl.create({title: `拉流${streamid}失败，${CommonUtil.msgTranse(_msg)}`}).present();
+          this.alertCtrl.create({title: `拉流${streamid}失败，${CommonUtil.msgTranse(_msg)||JSON.stringify(_msg)}`}).present();
         }
         this.status = {...this.status};
 

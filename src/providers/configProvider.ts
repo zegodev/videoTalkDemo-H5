@@ -11,7 +11,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
  */
 
 
-const DEFAULT_APPID  = 229059616;
+const DEFAULT_APPID  = 1082937486;
 
 
 @Injectable()

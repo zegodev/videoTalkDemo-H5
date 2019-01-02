@@ -5,8 +5,8 @@ import {ConfigProvider} from '../../providers/configProvider';
 import {SlidePipe} from "../../util/pipe/slidePipe";
 import {LogProvider} from "../../providers/logProvider";
 import {LogPage} from "../log/log";
-import {ZegoClient} from "webrtc-zego";
-import {StreamInfo} from "webrtc-zego/sdk/common/zego.entity";
+// import {ZegoClient} from "webrtc-zego";
+// import {StreamInfo} from "webrtc-zego/sdk/common/zego.entity";
 import {CommonUtil} from "../../util/commonUtil";
 
 /**

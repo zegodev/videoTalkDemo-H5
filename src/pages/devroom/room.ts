@@ -39,6 +39,7 @@ export class DevRoomPage {
   isSuportMultipCam = false;
   isPublish = true;
   isLogin = true;
+  isTestEnv  = false;
   
   @ViewChild ("localVideo")
   localVideo: ElementRef;
@@ -79,6 +80,7 @@ export class DevRoomPage {
     }
     this.isPublish = this.navParams.get ('isPublish') === false ? false : true;
     this.isLogin = this.navParams.get ('isLogin') === false ? false : true;
+    this.isTestEnv = this.navParams.get ('isTestEnv') === false ? false : true;
     this.publishStreamId = this.navParams.get ('publishStreamId') || ('s' + this.config.idName);
     
     this.isPublishAudio = this.navParams.get ('isPublishAudio');
@@ -214,11 +216,12 @@ export class DevRoomPage {
         appid: this.config.appId,
         idName: this.config.idName,
         nickName: this.config.nickName,
-        server: this.config.server,
+        server: this.isTestEnv?'wss://wssliveroom-test.zego.im/ws':this.config.server,
         logLevel: this.config.logLevel,
         logUrl: this.config.logUrl,
         remoteLogLevel: 0,
-        audienceCreateRoom: true
+        audienceCreateRoom: true,
+        testEnvironment:this.isTestEnv
       };
       this.logger.info (`#${this.publishStreamId}#config param:${JSON.stringify (_config)}`);
       

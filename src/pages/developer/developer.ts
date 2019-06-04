@@ -29,7 +29,7 @@ export class DeveloperPage implements OnInit {
   isPublishVideo = true;
   isPullAudio = true;
   isPullVideo = true;
-  
+  isTestEnv = false;
   
   constructor(public navCtrl: NavController, private logger: LogProvider,private config: ConfigProvider,
               private alertCtr: AlertController, private storage: Storage) {
@@ -53,7 +53,7 @@ export class DeveloperPage implements OnInit {
         this.isPublishVideo = typeof settings['isPublishVideo'] === 'undefined'?true:settings['isPublishVideo'];
         this.isPullAudio = typeof settings['isPullAudio'] === 'undefined'?true:settings['isPullAudio'];
         this.isPullVideo = typeof settings['isPullVideo'] === 'undefined'?true:settings['isPullVideo'];
-        
+        this.isTestEnv = typeof settings['isTestEnv'] === 'undefined'?true:settings['isTestEnv'];
       }else{
         this.signUrl = 'wss://webrtctest.zego.im/ws?a=webrtc-demo';
       }
@@ -78,7 +78,8 @@ export class DeveloperPage implements OnInit {
       isPullAudio: this.isPullAudio,
       isPullVideo: this.isPullVideo,
       authTokenUrl:this.authTokenUrl,
-      appNode:this.appNode
+      appNode:this.appNode,
+      isTestEnv:this.isTestEnv,
     };
     this.roomId = this.roomId&&this.roomId.replace(/^\s+|\s+$/gm,'');
     if (!this.roomId) {

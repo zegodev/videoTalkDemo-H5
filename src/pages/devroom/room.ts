@@ -321,7 +321,7 @@ export class DevRoomPage {
       videoInput: this.config.videoInput,
       videoQuality: this.config.videoQuality,
       horizontal: this.config.horizontal,
-      audioBitRate:this.audioRate
+      audioBitRate:this.audioRate*1
     };
     
     

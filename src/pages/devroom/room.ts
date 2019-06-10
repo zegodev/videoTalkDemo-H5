@@ -56,6 +56,7 @@ export class DevRoomPage {
   
   authTokenUrl = '';
   appNode = '';
+  audioRate = 480000;
   
   /****
    * 初始化
@@ -89,7 +90,7 @@ export class DevRoomPage {
     this.isPullVideo = this.navParams.get ('isPullVideo');
     this.authTokenUrl = this.navParams.get ('authTokenUrl');
     this.appNode = this.navParams.get ('appNode');
-    
+    this.audioRate = this.navParams.get ('audioRate');
     
     if (!this.roomId) {
       this.logger.warning (`#${this.publishStreamId}#roomId is empty,force to go back`);
@@ -319,7 +320,8 @@ export class DevRoomPage {
       video: this.config.video && this.isPublishVideo,
       videoInput: this.config.videoInput,
       videoQuality: this.config.videoQuality,
-      horizontal: this.config.horizontal
+      horizontal: this.config.horizontal,
+      audioBitRate:this.audioRate
     };
     
     

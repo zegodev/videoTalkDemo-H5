@@ -30,6 +30,7 @@ export class DeveloperPage implements OnInit {
   isPullAudio = true;
   isPullVideo = true;
   isTestEnv = false;
+  audioRate = 480000;
   
   constructor(public navCtrl: NavController, private logger: LogProvider,private config: ConfigProvider,
               private alertCtr: AlertController, private storage: Storage) {
@@ -42,6 +43,7 @@ export class DeveloperPage implements OnInit {
     this.storage.get('develop_setting').then(settings => {
       if(settings){
         this.roomId = settings['roomId'];
+        this.audioRate = settings['audioRate'];
         this.isPublish = settings['isPublish'];
         this.isLogin = settings['isLogin'];
         this.streamId = settings['publishStreamId'];
@@ -80,6 +82,7 @@ export class DeveloperPage implements OnInit {
       authTokenUrl:this.authTokenUrl,
       appNode:this.appNode,
       isTestEnv:this.isTestEnv,
+      audioRate:this.audioRate
     };
     this.roomId = this.roomId&&this.roomId.replace(/^\s+|\s+$/gm,'');
     if (!this.roomId) {
@@ -90,6 +93,12 @@ export class DeveloperPage implements OnInit {
     if( typeof  (this.appId*1) !== 'number'){
       this.logger.info('input appid is not number!');
       this.alertCtr.create({title: 'appid只能是数字'}).present();
+      return;
+    }
+  
+    if( typeof  (this.audioRate*1) !== 'number'){
+      this.logger.info('input audioRate is not number!');
+      this.alertCtr.create({title: 'audioRate只能是数字'}).present();
       return;
     }
   

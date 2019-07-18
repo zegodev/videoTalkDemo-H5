@@ -2,12 +2,12 @@
 import {Component, ViewChild, ElementRef, ViewChildren, QueryList} from '@angular/core';
 import {AlertController, Content, FabButton, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ConfigProvider} from '../../providers/configProvider';
-import {SlidePipe} from "../../util/pipe/slidePipe";
-import {LogProvider} from "../../providers/logProvider";
-import {LogPage} from "../log/log";
+import {SlidePipe} from '../../util/pipe/slidePipe';
+import {LogProvider} from '../../providers/logProvider';
+import {LogPage} from '../log/log';
 // import {ZegoClient} from "webrtc-zego";
 // import {StreamInfo} from "webrtc-zego/sdk/common/zego.entity";
-import {CommonUtil} from "../../util/commonUtil";
+import {CommonUtil} from '../../util/commonUtil';
 
 /**
  * Generated class for the DetailPage page.
@@ -39,9 +39,9 @@ export class DevRoomPage {
   isSuportMultipCam = false;
   isPublish = true;
   isLogin = true;
-  isTestEnv  = false;
+  isTestEnv = false;
   
-  @ViewChild ("localVideo")
+  @ViewChild ('localVideo')
   localVideo: ElementRef;
   @ViewChildren ('subVideo')
   subVideoList: QueryList<ElementRef>;
@@ -61,7 +61,7 @@ export class DevRoomPage {
   /****
    * 初始化
    * ***/
-  constructor (public navCtrl: NavController, public navParams: NavParams, private config: ConfigProvider
+  constructor(public navCtrl: NavController, public navParams: NavParams, private config: ConfigProvider
     , private slide: SlidePipe, private logger: LogProvider, public alertCtrl: AlertController) {
     // 从路由获取参数
     this.roomId = this.navParams.get ('roomId') || this.config.getParameterByName ('roomId');
@@ -101,7 +101,7 @@ export class DevRoomPage {
   /****
    * 路由钩子，跳转到改页面自动执行
    * ***/
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     if (typeof ZegoClient !== 'undefined') {
       this.init ();
     } else {
@@ -116,7 +116,7 @@ export class DevRoomPage {
   /****
    *  初始化zego sdk
    * ***/
-  init () {
+  init() {
     this.zg = new ZegoClient ();
     this.configZego ();
     
@@ -161,10 +161,10 @@ export class DevRoomPage {
     
     // 暴力关闭浏览器引起的内存未释放
     const isOnIOS = navigator.userAgent.match (/iPad/i) || navigator.userAgent.match (/iPhone/i);
-    const eventName = isOnIOS ? "pagehide" : "beforeunload";
+    const eventName = isOnIOS ? 'pagehide' : 'beforeunload';
     window.addEventListener (eventName, (event) => {
       window.event.cancelBubble = true; // Don't know if this works on iOS but it might!
-      console.log ("beafore unload");
+      console.log ('beafore unload');
       if (this.loginRoom) {
         this.logoutRoom ();
         this.loginRoom = false;
@@ -172,7 +172,7 @@ export class DevRoomPage {
     });
   }
   
-  playStream (streamId: string, ele: any, playType: 'all' | 'video' | 'audio') {
+  playStream(streamId: string, ele: any, playType: 'all' | 'video' | 'audio') {
     if (this.authTokenUrl && this.appNode) {
       
       this.config.loginAuthTokenUrl = this.authTokenUrl;
@@ -186,7 +186,7 @@ export class DevRoomPage {
         if (!result) {
           this.alertCtrl.create ({title: '哎呀，播放失败啦！'}).present ();
           ele.style = 'display:none';
-          console.error ("play " + ele.id + " return " + result);
+          console.error ('play ' + ele.id + ' return ' + result);
         }
       });
       
@@ -199,7 +199,7 @@ export class DevRoomPage {
       if (!result) {
         this.alertCtrl.create ({title: '哎呀，播放失败啦！'}).present ();
         ele.style = 'display:none';
-        console.error ("play " + ele.id + " return " + result);
+        console.error ('play ' + ele.id + ' return ' + result);
       }
     }
     
@@ -211,18 +211,18 @@ export class DevRoomPage {
    *
    *
    * */
-  configZego () {
+  configZego() {
     if (this.roomId) {
       let _config = {
         appid: this.config.appId,
         idName: this.config.idName,
         nickName: this.config.nickName,
-        server: this.isTestEnv?'wss://wssliveroom-test.zego.im/ws':this.config.server,
+        server: this.isTestEnv ? 'wss://wssliveroom-test.zego.im/ws' : this.config.server,
         logLevel: this.config.logLevel,
         logUrl: this.config.logUrl,
         remoteLogLevel: 0,
         audienceCreateRoom: true,
-        testEnvironment:this.isTestEnv
+        testEnvironment: this.isTestEnv
       };
       this.logger.info (`#${this.publishStreamId}#config param:${JSON.stringify (_config)}`);
       
@@ -242,7 +242,7 @@ export class DevRoomPage {
    * 2 登陆sdk，获取拉留信息，并播放，同时预览本地视频，推送本地流
    *
    * */
-  login () {
+  login() {
     
     this.logger.info (`#${this.publishStreamId}#get token start`);
     
@@ -309,7 +309,7 @@ export class DevRoomPage {
    * 同时预览本地视频，并推送
    *
    * */
-  doPreviewPublish () {
+  doPreviewPublish() {
     
     this.logger.info (`#${this.publishStreamId}#start Preview`);
     
@@ -321,11 +321,12 @@ export class DevRoomPage {
       videoInput: this.config.videoInput,
       videoQuality: this.config.videoQuality,
       horizontal: this.config.horizontal,
-      audioBitRate:this.audioRate*1
+      audioBitRate: this.audioRate * 1
     };
     
     
     this.logger.info (`#${this.publishStreamId}#  Preview  config ${JSON.stringify (_conf)}`);
+    console.warn ('this.localVideo',this.localVideo.nativeElement);
     
     this.zg.startPreview (this.localVideo.nativeElement, _conf, () => {
       
@@ -363,7 +364,7 @@ export class DevRoomPage {
   }
   
   
-  publishStream () {
+  publishStream() {
     if (this.authTokenUrl && this.appNode && this.isPublish) {
       this.config.loginAuthTokenUrl = this.authTokenUrl;
       this.config.getAuthToken (this.appNode, this.publishStreamId, false).subscribe ((rsp: any) => {
@@ -388,7 +389,7 @@ export class DevRoomPage {
   /****
    * 开或关闭摄像头
    * ***/
-  toggleCam () {
+  toggleCam() {
     if (this.offOnCam === 'md-videocam') {
       this.offOnCam = 'ios-videocam-outline';
       this.logger.info (`#${this.publishStreamId}#close camera`);
@@ -406,7 +407,7 @@ export class DevRoomPage {
   /****
    * 开或关闭麦克风
    * ***/
-  toggleMic () {
+  toggleMic() {
     if (this.offOnMic === 'md-mic') {
       this.offOnMic = 'ios-mic-outline';
       this.logger.info (`#${this.publishStreamId}#close micphone`);
@@ -424,7 +425,7 @@ export class DevRoomPage {
   /****
    * 开或关闭喇叭
    * ***/
-  toggleVolume () {
+  toggleVolume() {
     if (this.offOnVolume === 'md-volume-up') {
       this.offOnVolume = 'md-volume-off';
       this.subVideoList.forEach (item => {
@@ -444,7 +445,7 @@ export class DevRoomPage {
   /****
    * 切换前后摄像头 由于sdk暂不支持直接切换，所以我们这里实际上是先停止预览，再重新配置再预览
    * ***/
-  changeUseCam () {
+  changeUseCam() {
     if (this.changeCam === 'md-sync') {
       this.changeCam = 'ios-sync-outline';
     } else {
@@ -478,10 +479,10 @@ export class DevRoomPage {
     
   }
   
-  togglePullStream () {
+  togglePullStream() {
     const prompt = this.alertCtrl.create ({
       title: '',
-      message: "请输入拉流ID，多个流用逗号隔开",
+      message: '请输入拉流ID，多个流用逗号隔开',
       inputs: [
         {
           name: 'pullStreamIds',
@@ -530,15 +531,14 @@ export class DevRoomPage {
   /****
    * 绑定监听回掉函数，回掉钩子参见https://www.zego.im/html/document/#Live_Room/API_Instructions:web
    * ***/
-  listen () {
+  listen() {
     
     let _config = {
       onPlayStateUpdate: (type, streamid, error) => {
         if (type == 0) {
           this.logger.info (`#${streamid}# play  success`);
           this.status['pull' + streamid] = 'play suc';
-        }
-        else if (type == 2) {
+        } else if (type == 2) {
           this.logger.info (`#${streamid}# play retry`);
         } else {
           // trace("publish " + streamid + "error " + error.code);
@@ -555,7 +555,7 @@ export class DevRoomPage {
               _msg = 'sdp 解释错误';
             }
           }
-          this.alertCtrl.create({title: `拉流${streamid}失败，${CommonUtil.msgTranse(_msg)||JSON.stringify(_msg)}`}).present();
+          this.alertCtrl.create ({title: `拉流${streamid}失败，${CommonUtil.msgTranse (_msg) || JSON.stringify (_msg)}`}).present ();
         }
         this.status = {...this.status};
       },
@@ -581,26 +581,26 @@ export class DevRoomPage {
             }
           }
           
-          this.alertCtrl.create({title: `推流${streamid}失败，${CommonUtil.msgTranse(_msg)||JSON.stringify(_msg)}`}).present();
+          this.alertCtrl.create ({title: `推流${streamid}失败，${CommonUtil.msgTranse (_msg) || JSON.stringify (_msg)}`}).present ();
         }
         this.status = {...this.status};
       },
       onPublishQualityUpdate: (streamid, quality) => {
-        this.logger.info ("#" + streamid + "#" + "publish " + " audio: " + quality.audioBitrate + " video: " + quality.videoBitrate + " fps: " + quality.videoFPS);
+        this.logger.info ('#' + streamid + '#' + 'publish ' + ' audio: ' + quality.audioBitrate + ' video: ' + quality.videoBitrate + ' fps: ' + quality.videoFPS);
       },
       
       onPlayQualityUpdate: (streamid, quality) => {
-        this.logger.info ("#" + streamid + "#" + "play " + " audio: " + quality.audioBitrate + " video: " + quality.videoBitrate + " fps: " + quality.videoFPS);
+        this.logger.info ('#' + streamid + '#' + 'play ' + ' audio: ' + quality.audioBitrate + ' video: ' + quality.videoBitrate + ' fps: ' + quality.videoFPS);
       },
       
       onDisconnect: (error) => {
-        this.logger.errors ("onDisconnect " + JSON.stringify (error));
+        this.logger.errors ('onDisconnect ' + JSON.stringify (error));
         this.alertCtrl.create ({title: `网络连接已断开：${JSON.stringify (error)}`}).present ();
         this.logoutRoom ();
       },
       
       onKickOut: (error) => {
-        this.logger.errors ("onKickOut " + JSON.stringify (error));
+        this.logger.errors ('onKickOut ' + JSON.stringify (error));
       },
       
       onStreamExtraInfoUpdated: (streamList) => {
@@ -608,7 +608,7 @@ export class DevRoomPage {
       },
       
       onVideoSizeChanged: (streamid, videoWidth, videoHeight) => {
-        this.logger.info ("#" + streamid + "#" + "play " + " : " + videoWidth + "x" + videoHeight);
+        this.logger.info ('#' + streamid + '#' + 'play ' + ' : ' + videoWidth + 'x' + videoHeight);
       },
       
       onStreamUpdated: (type, streamList) => {
@@ -640,7 +640,7 @@ export class DevRoomPage {
         //this._useLocalStreamList = this.slide.transform(this.useLocalStreamList, 3);
       },
       onUserStateUpdate: (roomId, userList) => {
-        this.logger.info ("onUserStateUpdate = " + roomId + JSON.stringify (userList));
+        this.logger.info ('onUserStateUpdate = ' + roomId + JSON.stringify (userList));
       }
     }
     
@@ -652,8 +652,8 @@ export class DevRoomPage {
   /**
    * 销毁组建钩子
    */
-  ionViewWillUnload () {
-    this.logger.info ("beafore unload");
+  ionViewWillUnload() {
+    this.logger.info ('beafore unload');
     if (this.loginRoom) {
       this.leaveRoom ();
       this.loginRoom = false;
@@ -663,7 +663,7 @@ export class DevRoomPage {
   /****
    * 退出房间
    * ***/
-  leaveRoom () {
+  leaveRoom() {
     this.logger.info ('leave room  and close stream');
     
     this.zg.stopPreview (this.localVideo.nativeElement);
@@ -680,7 +680,7 @@ export class DevRoomPage {
   /****
    *  登出
    * ***/
-  logoutRoom () {
+  logoutRoom() {
     this.logger.info (`#${this.publishStreamId}# logout`);
     
     if (this.loginRoom) {
@@ -708,14 +708,14 @@ export class DevRoomPage {
   /****
    * 打开日志页面
    * ***/
-  showLogs () {
+  showLogs() {
     
     this.navCtrl.push (LogPage);
     
   }
   
   
-  identify (index: number, item: { stream_id: string }) {
+  identify(index: number, item: { stream_id: string }) {
     return item.stream_id;
   }
   

@@ -55,7 +55,7 @@ setTimeout(()=>{
     cert: fs.readFileSync('cert.pem')
   }, app).listen(8101);
   // opens the url in the default browser
-  opn('https://localhost:8101');
+  opn('https://192.168.2.3:8101');
 
   console.log('http proxy server started on port 8101');
 },12000);

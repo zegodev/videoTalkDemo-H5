@@ -58,6 +58,9 @@ export class DevRoomPage {
   appNode = '';
   audioRate = 480000;
   
+  noiseSuppression = true;
+  autoGainControl = true;
+  echoCancellation = true;
   /****
    * 初始化
    * ***/
@@ -91,6 +94,9 @@ export class DevRoomPage {
     this.authTokenUrl = this.navParams.get ('authTokenUrl');
     this.appNode = this.navParams.get ('appNode');
     this.audioRate = this.navParams.get ('audioRate');
+    this.noiseSuppression =  this.navParams.get ('noiseSuppression');
+    this.autoGainControl =  this.navParams.get ('autoGainControl');
+    this.echoCancellation =  this.navParams.get ('echoCancellation');
     
     if (!this.roomId) {
       this.logger.warning (`#${this.publishStreamId}#roomId is empty,force to go back`);
@@ -321,7 +327,10 @@ export class DevRoomPage {
       videoInput: this.config.videoInput,
       videoQuality: this.config.videoQuality,
       horizontal: this.config.horizontal,
-      audioBitRate: this.audioRate * 1
+      audioBitRate: this.audioRate * 1,
+      noiseSuppression: this.noiseSuppression,
+      autoGainControl: this.autoGainControl,
+      echoCancellation: this.echoCancellation,
     };
     
     
@@ -460,7 +469,11 @@ export class DevRoomPage {
       video: this.offOnCam === 'md-videocam',
       videoInput: this.config.toggleVideo (this.changeCam === 'md-sync' ? 0 : 1),
       videoQuality: this.config.videoQuality,
-      horizontal: this.config.horizontal
+      horizontal: this.config.horizontal,
+      audioBitRate: this.audioRate * 1,
+      noiseSuppression: this.noiseSuppression,
+      autoGainControl: this.autoGainControl,
+      echoCancellation: this.echoCancellation,
     };
     
     this.logger.info (`#${this.publishStreamId}#  Preview  config ${JSON.stringify (_config)}`);

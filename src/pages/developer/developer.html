@@ -33,6 +33,21 @@
   </ion-item>
 
   <ion-item>
+    <ion-label  >减噪</ion-label>
+    <ion-toggle    [(ngModel)]="noiseSuppression" checked="true"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+    <ion-label  >自动增益</ion-label>
+    <ion-toggle    [(ngModel)]="autoGainControl" checked="true"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+    <ion-label  >回声消除</ion-label>
+    <ion-toggle    [(ngModel)]="echoCancellation" checked="true"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
   <ion-label>是否测试环境</ion-label>
   <ion-toggle    [(ngModel)]="isTestEnv" checked="false"></ion-toggle>
   </ion-item>
